@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
+<body>
+
+<div th:replace="template :: header"></div>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <span>Here is all books:</span>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <table class="table-primary">
+            <tr>
+                <th>Name</th>
+            </tr>
+            <tr th:each="book : ${books}">
+                <td th:utext="${book.name}"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <form action="/book/add" method="post">
+            <input name="bookName" placeholder="book name" required>
+            <input name="genreName" placeholder="genre name" required>
+            <input name="authorName" placeholder="author name" required>
+            <button class="btn-primary" onclick="onsubmit()">Add book</button>
+        </form>
+    </div>
+    <div th:if="${message} != null" class="row justify-content-center align-items-center">
+        <span th:text="${message}" style="color: #1e7e34"></span>
+    </div>
+</div>
+
+</body>
+</html>
