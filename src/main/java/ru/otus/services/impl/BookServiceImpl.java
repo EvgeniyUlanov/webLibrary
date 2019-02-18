@@ -94,4 +94,21 @@ public class BookServiceImpl implements BookService {
         }
         return stringComments;
     }
+
+    @Override
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void addAuthorToBook(String bookName, String authorName) {
+        Book book = bookRepository
+                .findByName(bookName)
+                .orElseThrow(() -> new EntityNotFoundException("book not found"));
+        Author author = authorRepository
+                .findByName(authorName)
+                .orElseThrow(() -> new EntityNotFoundException("author not found"));
+        book.getAuthors().add(author);
+        bookRepository.save(book);
+    }
 }

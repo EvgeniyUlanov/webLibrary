@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
+<body>
+
+<div th:replace="template :: header"></div>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <p style="font-size: 24px">Book info</p>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <table class="table">
+                <tr>
+                    <td>Book name: </td>
+                    <td th:text="${book.name}"></td>
+                </tr>
+                <tr>
+                    <td>Genre: </td>
+                    <td th:text="${book.genre.name}"></td>
+                </tr>
+                <tr>
+                    <td>Authors: </td>
+                    <td><p th:each="author : ${book.authors}" th:text="${author.name}"></p></td>
+                </tr>
+                <tr>
+                    <td>Comments: </td>
+                    <td><p th:each="comment : ${book.comments}" th:text="${comment.getComment()}"></p></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <p style="font-size: 24px">----------------------------------</p>
+        </div>
+        <div class="row justify-content-center">
+            <form action="/book/addComment" method="post">
+                <input name="bookName" th:value="${book.name}" hidden="hidden"/>
+                <input name="comment" placeholder="enter comment here"/>
+                <input class="btn btn-primary" type="submit" value="add comment"/>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <form action="/book/addAuthorToBook" method="post">
+                <input name="bookName" th:value="${book.name}" hidden="hidden"/>
+                <select name="authorName">
+                    <option th:each="author : ${allAuthors}"
+                            th:value="${author.name}"
+                            th:text="${author.name}">
+                    </option>
+                </select>
+                <input class="btn btn-primary" type="submit" value="add author"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

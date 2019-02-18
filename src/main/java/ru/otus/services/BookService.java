@@ -21,4 +21,8 @@ public interface BookService {
     void addCommentToBook(String bookName, String comment);
 
     List<String> getCommentsByBook(String bookName);
+
+    void deleteBook(Long id);
+
+    void addAuthorToBook(String bookName, String authorName);
 }

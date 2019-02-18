@@ -30,9 +30,8 @@ public class Book {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Set<Author> authors = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id", referencedColumnName = "book_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Comment> comments = new ArrayList<>();
 
     public Book() {

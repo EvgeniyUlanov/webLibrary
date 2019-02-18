@@ -7,28 +7,78 @@
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
-        <span>Here is all books:</span>
+        <p style="font-size: 24px">Here is all books:</p>
     </div>
     <div class="row justify-content-center align-items-center">
-        <table class="table-primary">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
             <tr>
                 <th>Name</th>
+                <th>Genre</th>
+                <th>Authors</th>
+                <th></th>
+                <th></th>
             </tr>
+            </thead>
             <tr th:each="book : ${books}">
                 <td th:utext="${book.name}"></td>
+                <td th:utext="${book.genre.name}"></td>
+                <td>
+                    <p th:each="author : ${book.authors}" th:text="${author.name}"></p>
+                </td>
+                <td>
+                    <form action="/book/info" method="get">
+                        <input name="book_id" th:value="${book.id}" hidden="hidden"/>
+                        <input type="submit" value="info"/>
+                    </form>
+                </td>
+                <td>
+                    <form action="/book/delete" method="post">
+                        <input name="book_id" th:value="${book.id}" hidden="hidden"/>
+                        <input type="submit" value="delete"/>
+                    </form>
+                </td>
             </tr>
         </table>
     </div>
-    <div class="row justify-content-center align-items-center">
-        <form action="/book/add" method="post">
-            <input name="bookName" placeholder="book name" required>
-            <input name="genreName" placeholder="genre name" required>
-            <input name="authorName" placeholder="author name" required>
-            <button class="btn-primary" onclick="onsubmit()">Add book</button>
-        </form>
-    </div>
-    <div th:if="${message} != null" class="row justify-content-center align-items-center">
-        <span th:text="${message}" style="color: #1e7e34"></span>
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center">
+            <p style="font-size: 24px">Here you can add new book</p>
+        </div>
+        <div class="row justify-content-center align-items-center">
+            <form action="/book/add" method="post">
+                <table>
+                    <tr>
+                        <th>Book name</th>
+                        <th>Genre</th>
+                        <th>Author</th>
+                    </tr>
+                    <tr>
+                        <td><input name="bookName" placeholder="enter book name" required></td>
+                        <td>
+                            <select name="genreName">
+                                <option th:each="genre : ${genres}"
+                                        th:value="${genre.name}"
+                                        th:text="${genre.name}">
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="authorName">
+                                <option th:each="author : ${authors}"
+                                        th:value="${author.name}"
+                                        th:text="${author.name}">
+                                </option>
+                            </select>
+                        </td>
+                        <td><input class="btn-primary" type="submit" value="Add book"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div th:if="${message} != null" class="row justify-content-center align-items-center">
+            <span th:text="${message}" style="color: #1e7e34"></span>
+        </div>
     </div>
 </div>
 
