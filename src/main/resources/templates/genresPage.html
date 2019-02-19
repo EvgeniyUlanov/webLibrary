@@ -7,19 +7,21 @@
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
-        <span>Here is all genres:</span>
+        <span class="my-headers">Here is all genres:</span>
     </div>
     <div class="row justify-content-center align-items-center">
-        <table class="table-primary">
-            <tr>
-                <th>Name</th>
-            </tr>
-            <tr th:each="genre : ${genres}">
-                <td th:utext="${genre.name}"></td>
-            </tr>
-        </table>
+        <div  class="col-6">
+            <table class="table cont">
+                <tr>
+                    <th>Name</th>
+                </tr>
+                <tr th:each="genre : ${genres}">
+                    <td th:utext="${genre.name}"></td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class="row justify-content-center align-items-center">
+    <div class="row justify-content-center align-items-center cont">
         <form action="/genre/add" method="post">
             <input name="genreName" placeholder="genre name" required>
             <button class="btn-primary" onclick="onsubmit()">Add genre</button>

@@ -7,17 +7,21 @@
         <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{~/css/bootstrap.min.css}"/>
         <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{~/css/bootstrap-grid.min.css}"/>
         <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{~/css/bootstrap-reboot.min.css}"/>
+        <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{~/css/myStyles.css}"/>
         <script src="../static/js/myScripts.js" th:src="@{~/js/myScripts.js}"></script>
         <script src="../static/js/myScripts.js" th:src="@{~/js/bootstrap.min.js}"></script>
     </head>
 
     <header th:fragment="header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-info">
             <div class="container">
-                <a class="navbar-brand" href="#">My extra cool library</a>
-                <a href="/author/getAll">Get all authors</a>
-                <a href="/genre/getAll">Get all genres</a>
-                <a href="/book/all">Get all books</a>
+                <a class="navbar-brand" href="#">
+                    <img th:src="@{~/img/book_icon.png}" width="50" height="50"/>
+                    <span class="my-navbar-text">My extra cool library</span>
+                </a>
+                <a href="/author/getAll" class="my-navbar-text">Get all authors</a>
+                <a href="/genre/getAll" class="my-navbar-text">Get all genres</a>
+                <a href="/book/all" class="my-navbar-text">Get all books</a>
             </div>
         </nav>
     </header>

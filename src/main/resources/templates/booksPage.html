@@ -7,45 +7,73 @@
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
-        <p style="font-size: 24px">Here is all books:</p>
+        <p class="my-headers">Here is founded books:</p>
     </div>
     <div class="row justify-content-center align-items-center">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Genre</th>
-                <th>Authors</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tr th:each="book : ${books}">
-                <td th:utext="${book.name}"></td>
-                <td th:utext="${book.genre.name}"></td>
-                <td>
-                    <p th:each="author : ${book.authors}" th:text="${author.name}"></p>
-                </td>
-                <td>
-                    <form action="/book/info" method="get">
-                        <input name="book_id" th:value="${book.id}" hidden="hidden"/>
-                        <input type="submit" value="info"/>
-                    </form>
-                </td>
-                <td>
-                    <form action="/book/delete" method="post">
-                        <input name="book_id" th:value="${book.id}" hidden="hidden"/>
-                        <input type="submit" value="delete"/>
-                    </form>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="container-fluid">
-        <div class="row justify-content-center align-items-center">
-            <p style="font-size: 24px">Here you can add new book</p>
+        <div class="col-10">
+            <table class="table table-bordered cont">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Authors</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tr th:each="book : ${books}">
+                    <td th:utext="${book.name}"></td>
+                    <td th:utext="${book.genre.name}"></td>
+                    <td>
+                        <p th:each="author : ${book.authors}" th:text="${author.name}"></p>
+                    </td>
+                    <td>
+                        <form action="/book/info" method="get">
+                            <input name="book_id" th:value="${book.id}" hidden="hidden"/>
+                            <input type="submit" value="info"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/book/delete" method="post">
+                            <input name="book_id" th:value="${book.id}" hidden="hidden"/>
+                            <input type="submit" value="delete"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
+        <div class="col-2">
+            <div class="cont border rounded d-block">
+                <span>Find by author</span>
+                <form action="/book/findByAuthor">
+                    <select name="authorName">
+                        <option th:each="author : ${authors}"
+                                th:value="${author.name}"
+                                th:text="${author.name}">
+                        </option>
+                    </select>
+                    <input class="btn btn-info" type="submit" value="find by author"/>
+                </form>
+            </div>
+            <div class="cont border rounded">
+                <span>Find by genre</span>
+                <form action="/book/findByGenre">
+                    <select name="genreName">
+                        <option th:each="genre : ${genres}"
+                                th:value="${genre.name}"
+                                th:text="${genre.name}">
+                        </option>
+                    </select>
+                    <input class="btn btn-info" type="submit" value="find by genre"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
         <div class="row justify-content-center align-items-center">
+            <p class="my-headers">Here you can add new book</p>
+        </div>
+        <div class="row justify-content-center align-items-center cont">
             <form action="/book/add" method="post">
                 <table>
                     <tr>
@@ -71,7 +99,7 @@
                                 </option>
                             </select>
                         </td>
-                        <td><input class="btn-primary" type="submit" value="Add book"/></td>
+                        <td><input class="btn btn-primary" type="submit" value="Add book"/></td>
                     </tr>
                 </table>
             </form>

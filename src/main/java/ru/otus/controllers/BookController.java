@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.domain.Book;
 import ru.otus.services.AuthorService;
 import ru.otus.services.BookService;
 import ru.otus.services.GenreService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/book")
@@ -28,7 +30,7 @@ public class BookController {
 
     @GetMapping(value = "/all")
     public String getAll(Model model) {
-        prepareBasicModel(model);
+        prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
     }
 
@@ -38,14 +40,14 @@ public class BookController {
         String authorName = request.getParameter("authorName");
         String genreName = request.getParameter("genreName");
         bookService.addBook(bookName, genreName, authorName);
-        prepareBasicModel(model);
+        prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
     }
 
     @PostMapping(value = "/delete")
     public String deleteBook(@RequestParam(value = "book_id") Long id, Model model) {
         bookService.deleteBook(id);
-        prepareBasicModel(model);
+        prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
     }
 
@@ -78,9 +80,23 @@ public class BookController {
         return  "/bookInfoPage";
     }
 
-    private void prepareBasicModel(Model model) {
+    @GetMapping(value = "/findByAuthor")
+    public String findByAuthor(@RequestParam(value = "authorName") String authorName, Model model) {
+        List<Book> booksByAuthor = bookService.getBookByAuthor(authorName);
+        prepareBasicModel(model, booksByAuthor);
+        return "/booksPage";
+    }
+
+    @GetMapping(value = "/findByGenre")
+    public String findByGenre(@RequestParam(value = "genreName") String genreName, Model model) {
+        List<Book> booksByGenre = bookService.getBookByGenre(genreName);
+        prepareBasicModel(model, booksByGenre);
+        return "/booksPage";
+    }
+
+    private void prepareBasicModel(Model model, List<Book> books) {
         model.addAttribute("genres", genreService.getAll());
-        model.addAttribute("books", bookService.getAllBooks());
+        model.addAttribute("books", books);
         model.addAttribute("authors", authorService.getAll());
     }
 }

@@ -7,9 +7,9 @@
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
-        <p style="font-size: 24px">Book info</p>
+        <p class="my-headers">Book info</p>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center cont">
         <div class="col-6">
             <table class="table">
                 <tr>
@@ -33,16 +33,16 @@
     </div>
     <div class="container">
         <div class="row justify-content-center align-items-center">
-            <p style="font-size: 24px">----------------------------------</p>
+            <p>----------------------------------</p>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center cont">
             <form action="/book/addComment" method="post">
                 <input name="bookName" th:value="${book.name}" hidden="hidden"/>
                 <input name="comment" placeholder="enter comment here"/>
                 <input class="btn btn-primary" type="submit" value="add comment"/>
             </form>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center cont">
             <form action="/book/addAuthorToBook" method="post">
                 <input name="bookName" th:value="${book.name}" hidden="hidden"/>
                 <select name="authorName">
