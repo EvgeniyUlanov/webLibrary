@@ -33,10 +33,11 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/add")
-    public String addBook(HttpServletRequest request, Model model) {
-        String bookName = request.getParameter("bookName");
-        String authorName = request.getParameter("authorName");
-        String genreName = request.getParameter("genreName");
+    public String addBook(
+            @RequestParam(value = "bookName") String bookName,
+            @RequestParam(value = "authorName") String authorName,
+            @RequestParam(value = "genreName") String genreName,
+            Model model) {
         bookService.addBook(bookName, genreName, authorName);
         prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
