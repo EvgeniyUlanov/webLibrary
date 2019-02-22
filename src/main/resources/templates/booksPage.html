@@ -45,13 +45,13 @@
                         <p th:each="author : ${book.authors}" th:text="${author.name}">Default author</p>
                     </td>
                     <td>
-                        <form action="/book/info" method="get">
+                        <form th:action="@{/book/info}" action="bookInfoPage.html" method="get">
                             <input name="book_id" th:value="${book.id}" hidden="hidden"/>
                             <input type="submit" value="info"/>
                         </form>
                     </td>
                     <td>
-                        <form action="/book/delete" method="post">
+                        <form th:action="@{/book/delete}" method="post">
                             <input name="book_id" th:value="${book.id}" hidden="hidden"/>
                             <input type="submit" value="delete"/>
                         </form>
@@ -62,7 +62,7 @@
         <div class="col-2">
             <div class="cont border rounded d-block">
                 <span>Find by author</span>
-                <form action="/book/findByAuthor">
+                <form th:action="@{/book/findByAuthor}">
                     <select name="authorName">
                         <option th:each="author : ${authors}"
                                 th:value="${author.name}"
@@ -75,7 +75,7 @@
             </div>
             <div class="cont border rounded">
                 <span>Find by genre</span>
-                <form action="/book/findByGenre">
+                <form th:action="@{/book/findByGenre}">
                     <select name="genreName">
                         <option th:each="genre : ${genres}"
                                 th:value="${genre.name}"
@@ -93,7 +93,7 @@
             <p class="my-headers">Here you can add new book</p>
         </div>
         <div class="row justify-content-center align-items-center cont">
-            <form action="/book/add" method="post">
+            <form th:action="@{/book/add}" action="booksPage.html" method="post">
                 <table>
                     <tr>
                         <th>Book name</th>
