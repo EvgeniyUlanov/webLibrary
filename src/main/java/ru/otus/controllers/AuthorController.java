@@ -2,14 +2,10 @@ package ru.otus.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.services.AuthorService;
 
 @Controller
-@RequestMapping(value = "/author")
 public class AuthorController {
 
     private AuthorService authorService;
@@ -18,13 +14,13 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    @GetMapping(value = "/author/getAll")
     public String getAll(Model model) {
         model.addAttribute("authors", authorService.getAll());
         return "/authorsPage";
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/author/add")
     public String addAuthor(@RequestParam(name = "authorName") String name, Model model) {
         model.addAttribute("message",
                 authorService.addNewAuthorWithName(name) ? "author was added" : "author was not added");

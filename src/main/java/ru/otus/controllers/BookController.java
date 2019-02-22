@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.domain.Book;
 import ru.otus.services.AuthorService;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/book")
 public class BookController {
 
     private BookService bookService;
@@ -28,13 +26,13 @@ public class BookController {
         this.authorService = authorService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/book/all")
     public String getAll(Model model) {
         prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/book/add")
     public String addBook(HttpServletRequest request, Model model) {
         String bookName = request.getParameter("bookName");
         String authorName = request.getParameter("authorName");
@@ -44,21 +42,21 @@ public class BookController {
         return "/booksPage";
     }
 
-    @PostMapping(value = "/delete")
+    @PostMapping(value = "/book/delete")
     public String deleteBook(@RequestParam(value = "book_id") Long id, Model model) {
         bookService.deleteBook(id);
         prepareBasicModel(model, bookService.getAllBooks());
         return "/booksPage";
     }
 
-    @GetMapping(value = "/info")
+    @GetMapping(value = "/book/info")
     public String getBookInfo(@RequestParam(value = "book_id") Long id, Model model) {
         model.addAttribute("book", bookService.getBookById(id));
         model.addAttribute("allAuthors", authorService.getAll());
         return "/bookInfoPage";
     }
 
-    @PostMapping(value = "/addComment")
+    @PostMapping(value = "/book/addComment")
     public String addCommentToBook(
             @RequestParam(value = "comment") String comment,
             @RequestParam(value = "bookName") String bookName,
@@ -69,7 +67,7 @@ public class BookController {
         return "/bookInfoPage";
     }
 
-    @PostMapping(value = "/addAuthorToBook")
+    @PostMapping(value = "/book/addAuthorToBook")
     public String addAuthorToBook(
             @RequestParam(value = "bookName") String bookName,
             @RequestParam(value = "authorName") String authorName,
@@ -80,14 +78,14 @@ public class BookController {
         return  "/bookInfoPage";
     }
 
-    @GetMapping(value = "/findByAuthor")
+    @GetMapping(value = "/book/findByAuthor")
     public String findByAuthor(@RequestParam(value = "authorName") String authorName, Model model) {
         List<Book> booksByAuthor = bookService.getBookByAuthor(authorName);
         prepareBasicModel(model, booksByAuthor);
         return "/booksPage";
     }
 
-    @GetMapping(value = "/findByGenre")
+    @GetMapping(value = "/book/findByGenre")
     public String findByGenre(@RequestParam(value = "genreName") String genreName, Model model) {
         List<Book> booksByGenre = bookService.getBookByGenre(genreName);
         prepareBasicModel(model, booksByGenre);
