@@ -8,6 +8,9 @@ import ru.otus.services.AuthorService;
 @Controller
 public class AuthorController {
 
+    private static final String SUCCESS_MESSAGE = "ok";
+    private static final String ERROR_MESSAGE ="error";
+
     private AuthorService authorService;
 
     public AuthorController(AuthorService authorService) {
@@ -22,8 +25,8 @@ public class AuthorController {
 
     @PostMapping(value = "/author/add")
     public String addAuthor(@RequestParam(name = "authorName") String name, Model model) {
-        model.addAttribute("message",
-                authorService.addNewAuthorWithName(name) ? "author was added" : "author was not added");
+        boolean result = authorService.addNewAuthorWithName(name);
+        model.addAttribute("isOk", result ? SUCCESS_MESSAGE : ERROR_MESSAGE);
         model.addAttribute("authors", authorService.getAll());
         return "/authorsPage";
     }

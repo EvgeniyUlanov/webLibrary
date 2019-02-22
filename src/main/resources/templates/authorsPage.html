@@ -30,8 +30,13 @@
             <button class="btn-primary" onclick="onsubmit()">Add author</button>
         </form>
     </div>
-    <div th:if="${message} != null" class="row justify-content-center align-items-center">
-        <span th:text="${message}" style="color: #1e7e34"></span>
+    <div class="row justify-content-center align-items-center">
+        <div th:if="${isOk == 'ok'}">
+            <span class="successAction">Author was added</span>
+        </div>
+        <div th:if="${isOk == 'error'}">
+            <span class="errorAction">Author was not added</span>
+        </div>
     </div>
 </div>
 
