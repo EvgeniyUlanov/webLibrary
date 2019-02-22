@@ -10,6 +10,9 @@ import ru.otus.services.GenreService;
 @Controller
 public class GenreController {
 
+    private static final String SUCCESS_ACTION = "ok";
+    private static final String ERROR_ACTION = "error";
+
     private GenreService genreService;
 
     public GenreController(GenreService genreService) {
@@ -24,8 +27,7 @@ public class GenreController {
 
     @PostMapping(value = "/genre/add")
     public String addGenre(@RequestParam(name = "genreName") String name, Model model) {
-        model.addAttribute("message",
-                genreService.addNewGenreWithName(name) ? "genre was added" : "genre wasn't added");
+        model.addAttribute("isOk", genreService.addNewGenreWithName(name) ? SUCCESS_ACTION : ERROR_ACTION);
         model.addAttribute("genres", genreService.getAll());
         return "/genresPage";
     }

@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head"></head>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{~/webjars/bootstrap/4.1.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/myStyles.css" th:href="@{~/css/myStyles.css}"/>
+</head>
 <body>
 
-<div th:replace="template :: header"></div>
+<div th:replace="template :: header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../static/img/book_icon.png" width="50" height="50"/>
+                <span class="my-navbar-text">My extra cool library</span>
+            </a>
+            <a href="authorsPage.html" class="my-navbar-text">Get all authors</a>
+            <a href="genresPage.html" class="my-navbar-text">Get all genres</a>
+            <a href="booksPage.html" class="my-navbar-text">Get all books</a>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     <div class="row justify-content-center align-items-center">
@@ -14,19 +31,23 @@
             <table class="table">
                 <tr>
                     <td>Book name: </td>
-                    <td th:text="${book.name}"></td>
+                    <td th:text="${book.name}">Default book</td>
                 </tr>
                 <tr>
                     <td>Genre: </td>
-                    <td th:text="${book.genre.name}"></td>
+                    <td th:text="${book.genre.name}">Default genre</td>
                 </tr>
                 <tr>
                     <td>Authors: </td>
-                    <td><p th:each="author : ${book.authors}" th:text="${author.name}"></p></td>
+                    <td><p th:each="author : ${book.authors}" th:text="${author.name}">Default author</p></td>
                 </tr>
                 <tr>
                     <td>Comments: </td>
-                    <td><p th:each="comment : ${book.comments}" th:text="${comment.getComment()}"></p></td>
+                    <td>
+                        <p th:each="comment : ${book.comments}" th:text="${comment.getComment()}">
+                            Default comment
+                        </p>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -48,7 +69,7 @@
                 <select name="authorName">
                     <option th:each="author : ${allAuthors}"
                             th:value="${author.name}"
-                            th:text="${author.name}">
+                            th:text="${author.name}">Author
                     </option>
                 </select>
                 <input class="btn btn-primary" type="submit" value="add author"/>
