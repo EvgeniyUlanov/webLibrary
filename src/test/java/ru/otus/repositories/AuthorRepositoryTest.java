@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("springData")
+@ActiveProfiles("emptyH2")
 public class AuthorRepositoryTest {
 
     @Autowired

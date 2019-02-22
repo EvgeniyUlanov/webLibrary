@@ -35,3 +35,14 @@ spring:
     properties:
       hibernate.temp.use_jdbc_metadata_defaults: false
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+---
+spring:
+  profiles: emptyH2
+  datasource:
+      url: jdbc:h2:mem:library
+      initialization-mode: always
+      schema: classpath:/schema/schema.sql
+  jpa:
+      hibernate:
+         ddl-auto: update

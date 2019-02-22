@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("springData")
+@ActiveProfiles("emptyH2")
 public class BookRepositoryTest {
 
     @Autowired

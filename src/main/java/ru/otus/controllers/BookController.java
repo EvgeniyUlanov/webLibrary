@@ -10,7 +10,6 @@ import ru.otus.services.AuthorService;
 import ru.otus.services.BookService;
 import ru.otus.services.GenreService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller

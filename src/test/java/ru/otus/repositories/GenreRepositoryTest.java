@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("springData")
+@ActiveProfiles("emptyH2")
 public class GenreRepositoryTest {
 
     @Autowired
@@ -67,9 +67,9 @@ public class GenreRepositoryTest {
 
     @Test
     public void testGetAllMethod() {
-        Genre drama = entityManager.persistFlushFind(new Genre("Drama"));
-        Genre comedy = entityManager.persistFlushFind(new Genre("Comedy"));
-        Genre poem = entityManager.persistFlushFind(new Genre("Poem"));
+        Genre drama = entityManager.persistFlushFind(new Genre("some drama"));
+        Genre comedy = entityManager.persistFlushFind(new Genre("some comedy"));
+        Genre poem = entityManager.persistFlushFind(new Genre("some poem"));
 
         List<Genre> genreList = genreRepository.findAll();
 
