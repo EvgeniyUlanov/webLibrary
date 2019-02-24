@@ -1,5 +1,4 @@
 # Compiled class file
-*.class
 
 # Log file
 *.log
@@ -25,4 +24,5 @@ hs_err_pid*
 target
 *.iml
 .idea/
+src/main/resources/static/css/.DS_Store
 src/main/resources/static/css/bootstrap.min.css
