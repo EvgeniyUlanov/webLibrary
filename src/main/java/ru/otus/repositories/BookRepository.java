@@ -18,6 +18,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     List<Book> findByGenreName(String genre);
 
-    @Query("select b from Book b join b.authors a where a.name = :authorName")
+    @Query("select b from Book b join b.authors a where lower(a.name) like lower(:authorName)")
     List<Book> findByAuthorName(@Param("authorName") String authorName);
 }

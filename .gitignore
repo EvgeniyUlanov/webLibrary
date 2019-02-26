@@ -26,3 +26,4 @@ target
 .idea/
 src/main/resources/static/css/.DS_Store
 src/main/resources/static/css/bootstrap.min.css
+src/main/resources/static/js/jquery.min.js
