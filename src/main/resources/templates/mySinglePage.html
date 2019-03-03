@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-    <title>Title</title>
+    <title>Library</title>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css"
           th:href="@{~/webjars/bootstrap/4.1.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../static/css/myStyles.css" th:href="@{~/css/myStyles.css}"/>
@@ -10,7 +10,8 @@
     <script src="../static/js/myScripts.js" th:src="@{~/js/myScripts.js}"></script>
 </head>
 <body>
-<div>
+
+<div id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -99,7 +100,7 @@
                 <div class="row justify-content-center align-items-center">
                     <h3>Here is all authors:</h3>
                 </div>
-                <table class="table cont">
+                <table id="authorContainer_authorTable" class="table cont">
                     <tr>
                         <th>Name</th>
                     </tr>
@@ -108,10 +109,10 @@
                     <h4>Here you can add new author</h4>
                 </div>
                 <div class="row justify-content-center align-items-center cont">
-                    <input name="authorName" placeholder="author name" required>
-                    <input type="submit" class="btn btn-primary" value="Add author">
+                    <input id="authorContainer_newAuthorName" placeholder="author name" required>
+                    <button onclick="addAuthor()" class="btn btn-primary">Add author</button>
                 </div>
-                <div class="row justify-content-center align-items-center">
+                <div id="authorContainer_message" class="row justify-content-center align-items-center">
                 </div>
             </div>
             <div id="genreContainer" class="content">

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $('#bookInfo_buttonAddComment').on('click', addComment);
-    $('#bookInfo_buttonAddAuthor').on('click', addAuthor);
+    $('#bookInfo_buttonAddAuthor').on('click', addAuthorToBook);
     $('#buttonAddBook').on('click', addBook);
     fillBooksTable();
     fillAuthorsTable();
@@ -42,6 +42,8 @@ function fillBooksTable() {
 }
 
 function fillAuthorsTable() {
+    var authorTable = $('#authorContainer_authorTable');
+    authorTable.find('.removable').remove();
     $.ajax({
         type: 'GET',
         url: 'author/getAll',
@@ -49,6 +51,8 @@ function fillAuthorsTable() {
             $.each(response, function (index, author) {
                 $('#bookInfo_selectAuthor').append($('<option>').val(author.name).text(author.name));
                 $('#bookPage_selectAuthor').append($('<option>').val(author.name).text(author.name));
+                var tr = $('<tr>').addClass('removable').appendTo(authorTable);
+                $('<td>').text(author.name).appendTo(tr);
             })
         },
         error: function () {
@@ -135,7 +139,7 @@ function addComment() {
     }
 }
 
-function addAuthor() {
+function addAuthorToBook() {
     var bookId = $(this).val();
     var authorName = $('#bookInfo_selectAuthor').val();
     if (bookId !== '') {
@@ -181,6 +185,25 @@ function addGenre() {
             },
             error: function () {
                 $('#genreContainer_message').addClass('errorAction').append($('<span>').text('error'));
+            }
+        })
+    }
+}
+
+function addAuthor() {
+    var authorName = $('#authorContainer_newAuthorName').val();
+    $('#authorContainer_message').find('span').remove();
+    if (authorName !== '') {
+        $.ajax({
+            type: 'POST',
+            url: 'author/add',
+            data: {'authorName': authorName},
+            success: function () {
+                fillAuthorsTable();
+                $('#authorContainer_message').addClass('successAction').append($('<span>').text('author was added'));
+            },
+            error: function () {
+                $('#authorContainer_message').addClass('errorAction').append($('<span>').text('author was not added'));
             }
         })
     }
