@@ -30,9 +30,7 @@ class GenreControllerTest {
                 .perform(get("/genre/getAll"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/genresPage"),
-                        model().attributeExists("genres")
+                        content().contentType("application/json;charset=UTF-8")
                         )
                 );
         verify(genreService).getAll();
@@ -43,10 +41,7 @@ class GenreControllerTest {
         mvc
                 .perform(post("/genre/add").param("genreName", "genre"))
                 .andExpect(ResultMatcher.matchAll(
-                        status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/genresPage"),
-                        model().attributeExists("genres")
+                        status().isOk()
                         )
                 );
         verify(genreService).addNewGenreWithName("genre");

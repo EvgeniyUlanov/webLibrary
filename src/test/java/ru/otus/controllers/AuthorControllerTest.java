@@ -30,9 +30,7 @@ class AuthorControllerTest {
                 .perform(get("/author/getAll"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/authorsPage"),
-                        model().attributeExists("authors")
+                        content().contentType("application/json;charset=UTF-8")
                         )
                 );
         verify(authorService).getAll();
@@ -43,10 +41,7 @@ class AuthorControllerTest {
         mvc
                 .perform(post("/author/add").param("authorName", "new author"))
                 .andExpect(ResultMatcher.matchAll(
-                        status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/authorsPage"),
-                        model().attributeExists("authors")
+                        status().isOk()
                         )
                 );
         verify(authorService).addNewAuthorWithName("new author");
