@@ -1,15 +1,15 @@
 package ru.otus.controllers;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
 
-@Controller
-public class AuthorController {
+import java.util.List;
 
-    private static final String SUCCESS_MESSAGE = "ok";
-    private static final String ERROR_MESSAGE ="error";
+@RestController
+public class AuthorController {
 
     private AuthorService authorService;
 
@@ -18,16 +18,13 @@ public class AuthorController {
     }
 
     @GetMapping(value = "/author/getAll")
-    public String getAll(Model model) {
-        model.addAttribute("authors", authorService.getAll());
-        return "/authorsPage";
+    public List<Author> getAll(Model model) {
+        return authorService.getAll();
     }
 
     @PostMapping(value = "/author/add")
-    public String addAuthor(@RequestParam(name = "authorName") String name, Model model) {
-        boolean result = authorService.addNewAuthorWithName(name);
-        model.addAttribute("isOk", result ? SUCCESS_MESSAGE : ERROR_MESSAGE);
-        model.addAttribute("authors", authorService.getAll());
-        return "/authorsPage";
+    public HttpStatus addAuthor(@RequestParam(name = "authorName") String name, Model model) {
+        authorService.addNewAuthorWithName(name);
+        return HttpStatus.OK;
     }
 }
