@@ -28,7 +28,6 @@ public class BookController {
             @RequestParam(value = "bookName") String bookName,
             @RequestParam(value = "authorName") String authorName,
             @RequestParam(value = "genreName") String genreName) {
-        System.out.println(bookName + " " + authorName + " " + genreName);
         bookService.addBook(bookName, genreName, authorName);
         return HttpStatus.OK;
     }
@@ -48,8 +47,7 @@ public class BookController {
     public HttpStatus addCommentToBook(
             @RequestParam(value = "comment") String comment,
             @RequestParam(value = "book_id") Long bookId) {
-        Book book = bookService.getBookById(bookId);
-        bookService.addCommentToBook(book.getName(), comment);
+        bookService.addCommentToBook(bookId, comment);
         return HttpStatus.OK;
     }
 
@@ -58,8 +56,7 @@ public class BookController {
             @RequestParam(value = "book_id") Long bookId,
             @RequestParam(value = "authorName") String authorName,
             Model model) {
-        Book book = bookService.getBookById(bookId);
-        bookService.addAuthorToBook(book.getName(), authorName);
+        bookService.addAuthorToBook(bookId, authorName);
         return HttpStatus.OK;
     }
 
@@ -75,6 +72,6 @@ public class BookController {
 
     @GetMapping(value = "book/findByName")
     public List<Book> findByName(@RequestParam(value = "bookName") String bookName) {
-        return Collections.singletonList(bookService.getBookByName(bookName));
+        return bookService.getBookByName(bookName);
     }
 }

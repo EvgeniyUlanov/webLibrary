@@ -12,11 +12,13 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
 
-    Optional<Book> findByName(String bookName);
+    @Query("select b from Book b where lower(b.name) like lower(:bookName)")
+    List<Book> findByName(@Param("bookName") String bookName);
 
     List<Book> findAll();
 
-    List<Book> findByGenreName(String genre);
+    @Query("select b from Book b join b.genre g where lower(g.name) like lower(:genre)")
+    List<Book> findByGenreName(@Param("genre") String genre);
 
     @Query("select b from Book b join b.authors a where lower(a.name) like lower(:authorName)")
     List<Book> findByAuthorName(@Param("authorName") String authorName);

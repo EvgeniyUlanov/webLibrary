@@ -29,6 +29,6 @@ public class AuthorController {
 
     @GetMapping(value = "/author/findByName")
     public List<Author> findByName(@RequestParam(name = "authorName") String authorName) {
-        return authorService.findByName(authorName);
+        return authorService.findByNameIgnoreCase(authorName);
     }
 }

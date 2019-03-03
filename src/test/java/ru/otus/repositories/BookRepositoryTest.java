@@ -47,7 +47,7 @@ public class BookRepositoryTest {
         Book book = new Book(genre, "new book");
         entityManager.persistAndFlush(book);
 
-        Book expected = bookRepository.findByName("new book").orElseThrow(() -> new EntityNotFoundException("book not found"));
+        Book expected = bookRepository.findById(book.getId()).orElseThrow(() -> new EntityNotFoundException("book not found"));
         assertThat(expected.getName(), is("new book"));
     }
 

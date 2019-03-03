@@ -11,4 +11,6 @@ public interface AuthorService {
     boolean addNewAuthorWithName(String name);
 
     List<Author> findByName(String authorName);
+
+    List<Author> findByNameIgnoreCase(String authorName);
 }

@@ -104,7 +104,7 @@ class BookControllerTest {
 
     @Test
     void addCommentToBook() throws Exception {
-        when(bookService.getBookByName("book")).thenReturn(new Book(new Genre("genre"), "book"));
+        when(bookService.getBookById(1L)).thenReturn(new Book(new Genre("genre"), "book"));
         mvc
                 .perform(post("/book/addComment")
                         .param("comment", "comment")
@@ -117,12 +117,14 @@ class BookControllerTest {
                         model().attributeExists("allAuthors")
                         )
                 );
-        verify(bookService).addCommentToBook("book", "comment");
+        verify(bookService).addCommentToBook(1L, "comment");
     }
 
     @Test
     void addAuthorToBook() throws Exception {
-        when(bookService.getBookByName("book")).thenReturn(new Book(new Genre("genre"), "book"));
+        Book book = new Book(new Genre("genre"), "book");
+        book.setId(1L);
+        when(bookService.getBookById(1L)).thenReturn(book);
         mvc
                 .perform(post("/book/addAuthorToBook")
                         .param("bookName", "book")
@@ -135,7 +137,7 @@ class BookControllerTest {
                         model().attributeExists("allAuthors")
                         )
                 );
-        verify(bookService).addAuthorToBook("book", "author");
+        verify(bookService).addAuthorToBook(1L, "author");
     }
 
     @Test

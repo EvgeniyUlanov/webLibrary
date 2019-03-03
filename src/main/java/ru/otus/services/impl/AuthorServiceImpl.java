@@ -38,4 +38,9 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> findByName(String authorName) {
         return Collections.singletonList(authorRepository.findByName(authorName).orElseThrow(() ->new EntityNotFoundException("author not found")));
     }
+
+    @Override
+    public List<Author> findByNameIgnoreCase(String authorName) {
+        return authorRepository.findAuthorByNameIgnoreCase("%" + authorName + "%");
+    }
 }

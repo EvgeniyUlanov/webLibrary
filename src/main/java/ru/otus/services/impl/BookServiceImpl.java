@@ -1,6 +1,5 @@
 package ru.otus.services.impl;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.domain.Author;
@@ -31,8 +30,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookByName(String bookName) {
-        return bookRepository.findByName(bookName).orElse(null);
+    public List<Book> getBookByName(String bookName) {
+        return bookRepository.findByName("%" + bookName + "%");
     }
 
     @Override
@@ -47,7 +46,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBookByGenre(String genre) {
-        return bookRepository.findByGenreName(genre);
+        return bookRepository.findByGenreName("%" + genre + "%");
     }
 
     @Override
@@ -71,28 +70,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBookByAuthor(String authorName) {
-        return bookRepository.findByAuthorName(authorName);
+        return bookRepository.findByAuthorName("%" + authorName + "%");
     }
 
     @Override
-    public void addCommentToBook(String bookName, String comment) {
+    public void addCommentToBook(Long bookId, String comment) {
         Book book = bookRepository
-                .findByName(bookName)
+                .findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         book.getComments().add(new Comment(comment));
         bookRepository.save(book);
-    }
-
-    @Override
-    public List<String> getCommentsByBook(String bookName) {
-        Book book = bookRepository
-                .findByName(bookName)
-                .orElseThrow(() -> new EntityNotFoundException("book not found"));
-        List<String> stringComments = new ArrayList<>();
-        for (Comment comment : book.getComments()) {
-            stringComments.add(comment.getComment());
-        }
-        return stringComments;
     }
 
     @Override
@@ -101,9 +88,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addAuthorToBook(String bookName, String authorName) {
+    public void addAuthorToBook(Long bookId, String authorName) {
         Book book = bookRepository
-                .findByName(bookName)
+                .findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         Author author = authorRepository
                 .findByName(authorName)
