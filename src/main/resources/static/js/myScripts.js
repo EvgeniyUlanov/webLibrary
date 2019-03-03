@@ -10,11 +10,16 @@ $(document).ready(function () {
 });
 
 function fillBooksTable() {
+    fillBookTableWithRequest('book/all', {});
+}
+
+function fillBookTableWithRequest(url, data) {
     var bookTable = $('#bookTable');
     bookTable.find('.removable').remove();
     $.ajax({
         type: 'GET',
-        url: 'book/all',
+        url: url,
+        data: data,
         success: function (response) {
             $.each(response, function (id, book) {
                 var newTr = $('<tr>').addClass('removable').appendTo(bookTable);
@@ -42,11 +47,17 @@ function fillBooksTable() {
 }
 
 function fillAuthorsTable() {
+    fillAuthorsByRequest('author/getAll', {});
+}
+
+function fillAuthorsByRequest(url, data) {
     var authorTable = $('#authorContainer_authorTable');
     authorTable.find('.removable').remove();
+    $('#authorContainer_message').find('h2').remove();
     $.ajax({
         type: 'GET',
-        url: 'author/getAll',
+        url: url,
+        data: data,
         success: function (response) {
             $.each(response, function (index, author) {
                 $('#bookInfo_selectAuthor').append($('<option>').val(author.name).text(author.name));
@@ -56,7 +67,7 @@ function fillAuthorsTable() {
             })
         },
         error: function () {
-            alert('error');
+            $('#authorContainer_message').addClass('errorAction').append($('<h2>').text('author not found'));
         }
     })
 }
@@ -209,6 +220,39 @@ function addAuthor() {
     }
 }
 
+function findBook() {
+    var inputValue = $('#inputValue').val();
+    var typeOfSearching = $('#typeOfSearching').val();
+    var url;
+    var data;
+    switch (typeOfSearching) {
+        case 'byName':
+            url = 'book/findByName';
+            data = {'bookName': inputValue};
+            break;
+        case 'byAuthor':
+            url = 'book/findByAuthor';
+            data = {'authorName': inputValue};
+            break;
+        case 'byGenre':
+            url = 'book/findByGenre';
+            data = {'genreName': inputValue};
+            break;
+        default:
+            url = 'book/all';
+            data = {};
+            break;
+    }
+    fillBookTableWithRequest(url, data);
+    showBookContainer();
+}
+
+function findAuthor() {
+    var authorName = $('#authorName').val();
+    fillAuthorsByRequest('author/findByName', {'authorName': authorName});
+    showAuthorContainer();
+}
+
 function showBookContainer() {
     $('.content').hide();
     $('#bookContainer').show();
@@ -222,4 +266,19 @@ function showGenreContainer() {
 function showAuthorContainer() {
     $('.content').hide();
     $('#authorContainer').show();
+}
+
+function showAllAuthors() {
+    fillAuthorsTable();
+    showAuthorContainer();
+}
+
+function showAllGenres() {
+    fillGenresTable();
+    showGenreContainer();
+}
+
+function showAllBooks() {
+    fillBooksTable();
+    showBookContainer();
 }

@@ -17,9 +17,9 @@
             <a class="navbar-brand" href="#">
                 <img src="../static/img/book_icon.png" th:src="@{~/img/book_icon.png}" width="50" height="50"/>
                 <span class="my-navbar-text">My extra cool library</span>
-                <button class="btn btn-info nav-item" onclick="showAuthorContainer()">Authors</button>
-                <button class="btn btn-info nav-item" onclick="showGenreContainer()">Genres</button>
-                <button class="btn btn-info nav-item" onclick="showBookContainer()">Books</button>
+                <button class="btn btn-info nav-item" onclick="showAllAuthors()">Authors</button>
+                <button class="btn btn-info nav-item" onclick="showAllGenres()">Genres</button>
+                <button class="btn btn-info nav-item" onclick="showAllBooks()">Books</button>
             </a>
         </div>
     </nav>
@@ -32,17 +32,17 @@
             <div class="card-body">
                 <div class="card-title"><span>Find book by:</span></div>
                 <select id="typeOfSearching" name="typeOfSearching" class="form-control">
-                    <option value="bookName">Name</option>
-                    <option value="authorName">Author</option>
-                    <option value="genreName">Genre</option>
+                    <option value="byName">Name</option>
+                    <option value="byAuthor">Author</option>
+                    <option value="byGenre">Genre</option>
                 </select>
                 <input id="inputValue" class="form-control mt-3" placeholder="enter value"/>
-                <button class="btn btn-info form-control mt-3">Find book</button>
+                <button id="buttonFindBook" onclick="findBook()" class="btn btn-info form-control mt-3">Find book</button>
             </div>
             <div class="card-body">
                 <div class="card-title">Find author:</div>
                 <input id="authorName" class="form-control" placeholder="enter author name">
-                <button class="btn btn-info form-control mt-3">Find author</button>
+                <button onclick="findAuthor()" class="btn btn-info form-control mt-3">Find author</button>
             </div>
         </div>
         <div id="centralContainer" class="col-8 card withMargin">

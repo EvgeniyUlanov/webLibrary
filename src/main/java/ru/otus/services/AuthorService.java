@@ -9,4 +9,6 @@ public interface AuthorService {
     List<Author> getAll();
 
     boolean addNewAuthorWithName(String name);
+
+    List<Author> findByName(String authorName);
 }

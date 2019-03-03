@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Book;
 import ru.otus.services.BookService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -70,5 +71,10 @@ public class BookController {
     @GetMapping(value = "/book/findByGenre")
     public List<Book> findByGenre(@RequestParam(value = "genreName") String genreName) {
         return bookService.getBookByGenre(genreName);
+    }
+
+    @GetMapping(value = "book/findByName")
+    public List<Book> findByName(@RequestParam(value = "bookName") String bookName) {
+        return Collections.singletonList(bookService.getBookByName(bookName));
     }
 }
