@@ -2,20 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-    <title>Title</title>
+    <title>Library</title>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css"
           th:href="@{~/webjars/bootstrap/4.1.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../static/css/myStyles.css" th:href="@{~/css/myStyles.css}"/>
-    <script src="../static/js/myScripts.js" th:href="@{~/js/myScripts.js}"></script>
-    <script src="../static/js/jquery.min.js" th:href="@{~/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+    <script src="../static/js/jquery.min.js" th:src="@{~/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+    <script src="../static/js/myScripts.js" th:src="@{~/js/myScripts.js}"></script>
 </head>
 <body>
-<div th:replace="template :: header">
+
+<div id="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="../static/img/book_icon.png" width="50" height="50"/>
+                <img src="../static/img/book_icon.png" th:src="@{~/img/book_icon.png}" width="50" height="50"/>
                 <span class="my-navbar-text">My extra cool library</span>
+                <button class="btn btn-info nav-item" onclick="showAllAuthors()">Authors</button>
+                <button class="btn btn-info nav-item" onclick="showAllGenres()">Genres</button>
+                <button class="btn btn-info nav-item" onclick="showAllBooks()">Books</button>
             </a>
         </div>
     </nav>
@@ -23,31 +27,30 @@
 
 <div id="mainContainer" class="container">
 
-    <div class="row justify-content-center align-items-center">
-        <div id="leftSideContainer" class="col-2 cont">
-            <div>
-                <span>Find book</span>
-                <select name="typeOfSearching">
-                    <option value="bookName">By book name</option>
-                    <option value="authorName">By author name</option>
-                    <option value="genreName">By genre</option>
+    <div class="row">
+        <div id="leftSideContainer" class="col-3 card withMargin align-self-start">
+            <div class="card-body">
+                <div class="card-title"><span>Find book by:</span></div>
+                <select id="typeOfSearching" name="typeOfSearching" class="form-control">
+                    <option value="byName">Name</option>
+                    <option value="byAuthor">Author</option>
+                    <option value="byGenre">Genre</option>
                 </select>
-                <input id="inputValue" placeholder="enter value"/>
-                <button class="btn btn-info">Find book</button>
+                <input id="inputValue" class="form-control mt-3" placeholder="enter value"/>
+                <button id="buttonFindBook" onclick="findBook()" class="btn btn-info form-control mt-3">Find book</button>
             </div>
-            <div>
-                <span>Find author</span>
-                <input id="authorName" placeholder="enter author name">
-                <button class="btn btn-info">Find author</button>
+            <div class="card-body">
+                <div class="card-title">Find author:</div>
+                <input id="authorName" class="form-control" placeholder="enter author name">
+                <button onclick="findAuthor()" class="btn btn-info form-control mt-3">Find author</button>
             </div>
         </div>
-        <div id="centralContainer" class="col-8">
-            <div id="startContainer" class="activeContent"></div>
-            <div id="bookContainer" class="activeContent">
+        <div id="centralContainer" class="col-8 card withMargin">
+            <div id="bookContainer" class="content">
                 <div class="row justify-content-center align-items-center">
-                    <p class="my-headers">Here is founded books:</p>
+                    <h3>Here is founded books:</h3>
                 </div>
-                <table class="table table-bordered cont">
+                <table id="bookTable" class="table table-bordered cont">
                     <thead class="thead-dark">
                     <tr>
                         <th>Name</th>
@@ -57,144 +60,124 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <tr th:each="book : ${books}">
-                        <td th:utext="${book.name}">Default book</td>
-                        <td th:utext="${book.genre.name}">Default genre</td>
-                        <td>
-                            <p th:each="author : ${book.authors}" th:text="${author.name}">Default author</p>
-                        </td>
-                        <td>
-                            <form th:action="@{/book/info}" action="bookInfoPage.html" method="get">
-                                <input name="book_id" th:value="${book.id}" hidden="hidden"/>
-                                <input type="submit" value="info"/>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{/book/delete}" method="post">
-                                <input name="book_id" th:value="${book.id}" hidden="hidden"/>
-                                <input type="submit" value="delete"/>
-                            </form>
-                        </td>
-                    </tr>
                 </table>
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
-                        <p class="my-headers">Here you can add new book</p>
+                        <h3>Here you can add new book</h3>
                     </div>
                     <div class="row justify-content-center align-items-center cont">
-                        <form th:action="@{/book/add}" action="booksPage.html" method="post">
-                            <table>
-                                <tr>
-                                    <th>Book name</th>
-                                    <th>Genre</th>
-                                    <th>Author</th>
-                                </tr>
-                                <tr>
-                                    <td><input name="bookName" placeholder="enter book name" required></td>
-                                    <td>
-                                        <select name="genreName">
-                                            <option th:each="genre : ${genres}"
-                                                    th:value="${genre.name}"
-                                                    th:text="${genre.name}">
-                                                Genre
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="authorName">
-                                            <option th:each="author : ${authors}"
-                                                    th:value="${author.name}"
-                                                    th:text="${author.name}">
-                                                Author
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td><input class="btn btn-primary" type="submit" value="Add book"/></td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                    <div th:if="${message} != null" class="row justify-content-center align-items-center">
-                        <span th:text="${message}" style="color: #1e7e34"></span>
-                    </div>
-                </div>
-            </div>
-            <div id="authorContainer" hidden="hidden">
-                <div class="row justify-content-center align-items-center">
-                    <span class="my-headers">Here is all authors:</span>
-                </div>
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-6">
-                        <table class="table cont">
+                        <table>
                             <tr>
-                                <th>Name</th>
+                                <th>Book name</th>
+                                <th>Genre</th>
+                                <th>Author</th>
                             </tr>
-                            <tr th:each="author : ${authors}">
-                                <td th:utext="${author.name}">Default author</td>
+                            <tr>
+                                <td>
+                                    <input id="bookPage_newBookName"
+                                           class="form-control"
+                                           name="bookName"
+                                           placeholder="enter book name"
+                                           required/>
+                                </td>
+                                <td>
+                                    <select id="bookPage_selectGenre" name="genreName" class="form-control">
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="bookPage_selectAuthor" name="authorName" class="form-control">
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="buttonAddBook" class="btn btn-primary form-control">Add book</button>
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
+            </div>
+            <div id="authorContainer" class="content">
                 <div class="row justify-content-center align-items-center">
-                    <span class="my-headers">Here you can add new author</span>
+                    <h3>Here is all authors:</h3>
+                </div>
+                <table id="authorContainer_authorTable" class="table cont">
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </table>
+                <div class="row justify-content-center align-items-center">
+                    <h4>Here you can add new author</h4>
                 </div>
                 <div class="row justify-content-center align-items-center cont">
-                    <form th:action="@{/author/add}" action="" method="post">
-                        <input name="authorName" placeholder="author name" required>
-                        <input type="submit" class="btn btn-primary" value="Add author">
-                    </form>
+                    <input id="authorContainer_newAuthorName" placeholder="author name" required>
+                    <button onclick="addAuthor()" class="btn btn-primary">Add author</button>
                 </div>
-                <div class="row justify-content-center align-items-center">
-                    <span th:if="${isOk == 'ok'}" th:text="${'Author was added'}"
-                          class="successAction">Success action</span>
-                    <span th:if="${isOk == 'error'}" th:text="${'Author was not added'}" class="errorAction">Error action</span>
+                <div id="authorContainer_message" class="row justify-content-center align-items-center">
                 </div>
             </div>
-            <div id="genreContainer" hidden="hidden">
+            <div id="genreContainer" class="content">
                 <div class="row justify-content-center align-items-center">
-                    <span class="my-headers">Here is all genres:</span>
+                    <h3>Here is all genres:</h3>
                 </div>
                 <div class="row justify-content-center align-items-center">
                     <div class="col-6">
-                        <table class="table cont">
+                        <table id="genreTable" class="table cont">
                             <tr>
                                 <th>Name</th>
-                            </tr>
-                            <tr th:each="genre : ${genres}">
-                                <td th:utext="${genre.name}">Some genre</td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="row justify-content-center align-items-center cont">
-                    <form th:action="@{/genre/add}" method="post">
-                        <input name="genreName" placeholder="genre name" required>
-                        <button class="btn btn-primary" onclick="onsubmit()">Add genre</button>
-                    </form>
+                    <input id="genreContainer_newGenreName" placeholder="genre name" required>
+                    <button class="btn btn-primary" onclick="addGenre()">Add genre</button>
                 </div>
+                <div id="genreContainer_message" class="row justify-content-center align-items-center">
+                </div>
+            </div>
+            <div id="bookInfo" class="content">
                 <div class="row justify-content-center align-items-center">
-                    <span th:if="${isOk == 'ok'}" th:text="${'Genre was added'}"
-                          class="successAction">Success adding</span>
-                    <span th:if="${isOk == 'error'}" th:text="${'Genre was not added'}"
-                          class="errorAction">Error adding</span>
+                    <h3>Book info</h3>
+                </div>
+                <div class="row justify-content-center cont">
+                    <div class="col-6">
+                        <table class="table">
+                            <tr>
+                                <td>Book name:</td>
+                                <td id="bookInfo_bookName"></td>
+                            </tr>
+                            <tr>
+                                <td>Genre:</td>
+                                <td id="bookInfo_genre"></td>
+                            </tr>
+                            <tr>
+                                <td>Authors:</td>
+                                <td id="bookInfo_authors"></td>
+                            </tr>
+                            <tr>
+                                <td>Comments:</td>
+                                <td id="bookInfo_comments"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <p>----------------------------------</p>
+                    </div>
+                    <div class="row justify-content-center cont">
+                        <input id="bookInfo_comment" placeholder="enter comment here"/>
+                        <button id="bookInfo_buttonAddComment" class="btn btn-primary">Add comment</button>
+                    </div>
+                    <div class="row justify-content-center cont">
+                        <select id="bookInfo_selectAuthor" name="authorName">
+                        </select>
+                        <button id="bookInfo_buttonAddAuthor" class="btn btn-primary">Add author</button>
+                    </div>
                 </div>
             </div>
-            <div id="bookInfo" hidden="hidden">
+            <div id="authorInfo" class="content">
 
-            </div>
-            <div id="authorInfo" hidden="hidden">
-
-            </div>
-        </div>
-        <div id="rightSideContainer" class="col-2">
-            <div class="withMargin">
-                <button href="authorsPage.html" class="btn btn-info btn-block">Authors</button>
-            </div>
-            <div class="withMargin">
-                <button href="genresPage.html" class="btn btn-info btn-block">Genres</button>
-            </div>
-            <div class="withMargin">
-                <button href="booksPage.html" class="btn btn-info btn-block">Books</button>
             </div>
         </div>
     </div>

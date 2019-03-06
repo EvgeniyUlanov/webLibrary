@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookService {
 
-    Book getBookByName(String bookName);
+    List<Book> getBookByName(String bookName);
 
     Book getBookById(Long id);
 
@@ -18,11 +18,9 @@ public interface BookService {
 
     List<Book> getBookByAuthor(String authorName);
 
-    void addCommentToBook(String bookName, String comment);
-
-    List<String> getCommentsByBook(String bookName);
+    void addCommentToBook(Long bookId, String comment);
 
     void deleteBook(Long id);
 
-    void addAuthorToBook(String bookName, String authorName);
+    void addAuthorToBook(Long bookId, String authorName);
 }

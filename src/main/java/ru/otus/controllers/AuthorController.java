@@ -1,15 +1,14 @@
 package ru.otus.controllers;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
 
-@Controller
-public class AuthorController {
+import java.util.List;
 
-    private static final String SUCCESS_MESSAGE = "ok";
-    private static final String ERROR_MESSAGE ="error";
+@RestController
+public class AuthorController {
 
     private AuthorService authorService;
 
@@ -18,16 +17,18 @@ public class AuthorController {
     }
 
     @GetMapping(value = "/author/getAll")
-    public String getAll(Model model) {
-        model.addAttribute("authors", authorService.getAll());
-        return "/authorsPage";
+    public List<Author> getAll() {
+        return authorService.getAll();
     }
 
     @PostMapping(value = "/author/add")
-    public String addAuthor(@RequestParam(name = "authorName") String name, Model model) {
-        boolean result = authorService.addNewAuthorWithName(name);
-        model.addAttribute("isOk", result ? SUCCESS_MESSAGE : ERROR_MESSAGE);
-        model.addAttribute("authors", authorService.getAll());
-        return "/authorsPage";
+    public ResponseEntity<String> addAuthor(@RequestParam(name = "authorName") String name) {
+        authorService.addNewAuthorWithName(name);
+        return ResponseEntity.ok("{}");
+    }
+
+    @GetMapping(value = "/author/findByName")
+    public List<Author> findByName(@RequestParam(name = "authorName") String authorName) {
+        return authorService.findByNameIgnoreCase(authorName);
     }
 }

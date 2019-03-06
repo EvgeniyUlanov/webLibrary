@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -30,9 +31,7 @@ class AuthorControllerTest {
                 .perform(get("/author/getAll"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/authorsPage"),
-                        model().attributeExists("authors")
+                        content().contentType(MediaType.APPLICATION_JSON_UTF8)
                         )
                 );
         verify(authorService).getAll();
@@ -43,10 +42,7 @@ class AuthorControllerTest {
         mvc
                 .perform(post("/author/add").param("authorName", "new author"))
                 .andExpect(ResultMatcher.matchAll(
-                        status().isOk(),
-                        content().contentType("text/html;charset=UTF-8"),
-                        view().name("/authorsPage"),
-                        model().attributeExists("authors")
+                        status().isOk()
                         )
                 );
         verify(authorService).addNewAuthorWithName("new author");

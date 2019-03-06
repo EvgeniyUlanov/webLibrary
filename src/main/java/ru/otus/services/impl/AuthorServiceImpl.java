@@ -2,9 +2,11 @@ package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
+import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.repositories.AuthorRepository;
 import ru.otus.services.AuthorService;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,5 +32,15 @@ public class AuthorServiceImpl implements AuthorService {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public List<Author> findByName(String authorName) {
+        return Collections.singletonList(authorRepository.findByName(authorName).orElseThrow(() ->new EntityNotFoundException("author not found")));
+    }
+
+    @Override
+    public List<Author> findByNameIgnoreCase(String authorName) {
+        return authorRepository.findAuthorByNameIgnoreCase("%" + authorName + "%");
     }
 }

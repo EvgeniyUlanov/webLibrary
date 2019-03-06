@@ -6,9 +6,6 @@
     background-color: beige;
     margin-top: 10px;
 }
-.my-headers {
-    font-size: 24px
-}
 .successAction {
     color: #1e7e34;
 }
@@ -17,10 +14,10 @@
 }
 .withMargin {
     margin-top: 10px;
+    margin-left: 10px;
 }
 body, html {
     height: 100%;
-    background: white url("../img/background5.jpg");
     background-size: cover;
-    background-position: center;
+    background: white url("../img/background5.jpg") center;
 }
