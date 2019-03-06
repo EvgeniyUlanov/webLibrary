@@ -1,6 +1,6 @@
 package ru.otus.controllers;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Genre;
 import ru.otus.services.GenreService;
@@ -22,8 +22,8 @@ public class GenreController {
     }
 
     @PostMapping(value = "/genre/add")
-    public HttpStatus addGenre(@RequestParam(name = "genreName") String name) {
+    public ResponseEntity<String> addGenre(@RequestParam(name = "genreName") String name) {
         genreService.addNewGenreWithName(name);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 }

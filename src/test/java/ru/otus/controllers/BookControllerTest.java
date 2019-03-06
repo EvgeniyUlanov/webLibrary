@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -32,7 +33,7 @@ class BookControllerTest {
                 .perform(get("/book/all"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("application/json;charset=UTF-8")
+                        content().contentType(MediaType.APPLICATION_JSON_UTF8)
                         )
                 );
         verify(bookService).getAllBooks();
@@ -70,7 +71,7 @@ class BookControllerTest {
                 .perform(get("/book/info").param("book_id", "1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("application/json;charset=UTF-8")
+                        content().contentType(MediaType.APPLICATION_JSON_UTF8)
                         )
                 );
         verify(bookService).getBookById(1L);
@@ -108,7 +109,7 @@ class BookControllerTest {
                 .perform(get("/book/findByAuthor").param("authorName", "author"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("application/json;charset=UTF-8")
+                        content().contentType(MediaType.APPLICATION_JSON_UTF8)
                         )
                 );
         verify(bookService).getBookByAuthor("author");
@@ -120,7 +121,7 @@ class BookControllerTest {
                 .perform(get("/book/findByGenre").param("genreName", "genre"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
-                        content().contentType("application/json;charset=UTF-8")
+                        content().contentType(MediaType.APPLICATION_JSON_UTF8)
                         )
                 );
         verify(bookService).getBookByGenre("genre");

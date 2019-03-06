@@ -1,12 +1,11 @@
 package ru.otus.controllers;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Book;
 import ru.otus.services.BookService;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -24,18 +23,18 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/add")
-    public HttpStatus addBook(
+    public ResponseEntity<String> addBook(
             @RequestParam(value = "bookName") String bookName,
             @RequestParam(value = "authorName") String authorName,
             @RequestParam(value = "genreName") String genreName) {
         bookService.addBook(bookName, genreName, authorName);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 
     @PostMapping(value = "/book/delete")
-    public HttpStatus deleteBook(@RequestParam(value = "book_id") Long id) {
+    public ResponseEntity<String> deleteBook(@RequestParam(value = "book_id") Long id) {
         bookService.deleteBook(id);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/book/info")
@@ -44,20 +43,20 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/addComment")
-    public HttpStatus addCommentToBook(
+    public ResponseEntity<String> addCommentToBook(
             @RequestParam(value = "comment") String comment,
             @RequestParam(value = "book_id") Long bookId) {
         bookService.addCommentToBook(bookId, comment);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 
     @PostMapping(value = "/book/addAuthorToBook")
-    public HttpStatus addAuthorToBook(
+    public ResponseEntity<String> addAuthorToBook(
             @RequestParam(value = "book_id") Long bookId,
             @RequestParam(value = "authorName") String authorName,
             Model model) {
         bookService.addAuthorToBook(bookId, authorName);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/book/findByAuthor")

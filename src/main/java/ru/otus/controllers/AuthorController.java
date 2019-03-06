@@ -1,6 +1,6 @@
 package ru.otus.controllers;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
@@ -22,9 +22,9 @@ public class AuthorController {
     }
 
     @PostMapping(value = "/author/add")
-    public HttpStatus addAuthor(@RequestParam(name = "authorName") String name) {
+    public ResponseEntity<String> addAuthor(@RequestParam(name = "authorName") String name) {
         authorService.addNewAuthorWithName(name);
-        return HttpStatus.OK;
+        return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/author/findByName")

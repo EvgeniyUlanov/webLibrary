@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    $('#bookInfo_buttonAddComment').on('click', addComment);
-    $('#bookInfo_buttonAddAuthor').on('click', addAuthorToBook);
-    $('#buttonAddBook').on('click', addBook);
+    $('#bookInfo_buttonAddComment').click(addComment);
+    $('#bookInfo_buttonAddAuthor').click(addAuthorToBook);
+    $('#buttonAddBook').click(addBook);
     fillBooksTable();
     fillAuthorsTable();
     fillGenresTable();
@@ -30,13 +30,13 @@ function fillBookTableWithRequest(url, data) {
                     .text('delete')
                     .val(book.id)
                     .addClass('btn btn-primary deleteButton')
-                    .on('click', buttonDeleteHandler);
+                    .click(buttonDeleteHandler);
                 $('<td>').append(buttonDelete).appendTo(newTr);
                 var buttonInfo = $('<button>')
                     .text('info')
                     .val(book.id)
                     .addClass('btn btn-primary infoButton')
-                    .on('click', buttonInfoHandler);
+                    .click(buttonInfoHandler);
                 $('<td>').append(buttonInfo).appendTo(newTr);
             })
         },
