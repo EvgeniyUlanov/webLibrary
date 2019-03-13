@@ -7,6 +7,7 @@
 
     <modules>
         <module>webLibrarySql</module>
+        <module>webLibraryMongo</module>
     </modules>
 
     <groupId>ru.otus</groupId>
@@ -33,9 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
-        <!--data-->
-
 
         <!--bootstrap-->
         <dependency>
