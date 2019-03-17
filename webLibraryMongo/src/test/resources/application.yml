@@ -1,13 +1,10 @@
 spring:
   profiles:
     active: mongo
-debug: false
 
 ---
 spring:
   profiles: mongo
   data:
     mongodb:
-      database: library
-      host: localhost
-      port: 27017
+      database: libraryTest
