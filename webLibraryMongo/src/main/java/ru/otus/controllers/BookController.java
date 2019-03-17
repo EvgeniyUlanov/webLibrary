@@ -62,7 +62,7 @@ public class BookController {
         return bookService.getBookByGenre(genreName);
     }
 
-    @GetMapping(value = "book/findByName")
+    @GetMapping(value = "/book/findByName")
     public Flux<Book> findByName(@RequestParam(value = "bookName") String bookName) {
         return bookService.getBookByName(bookName);
     }
