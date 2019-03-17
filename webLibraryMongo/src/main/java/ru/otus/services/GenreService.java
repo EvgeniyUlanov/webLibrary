@@ -1,12 +1,11 @@
 package ru.otus.services;
 
+import reactor.core.publisher.Flux;
 import ru.otus.domain.Genre;
-
-import java.util.List;
 
 public interface GenreService {
 
-    List<Genre> getAll();
+    Flux<Genre> getAll();
 
-    boolean addNewGenreWithName(String name);
+    void createNewGenre(Genre genre);
 }

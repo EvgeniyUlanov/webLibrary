@@ -2,10 +2,9 @@ package ru.otus.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import ru.otus.domain.Genre;
 import ru.otus.services.GenreService;
-
-import java.util.List;
 
 @RestController
 public class GenreController {
@@ -17,13 +16,13 @@ public class GenreController {
     }
 
     @GetMapping(value = "/genre/getAll")
-    public List<Genre> getAllGenres() {
+    public Flux<Genre> getAllGenres() {
         return genreService.getAll();
     }
 
-    @PostMapping(value = "/genre/add")
-    public ResponseEntity<String> addGenre(@RequestParam(name = "genreName") String name) {
-        genreService.addNewGenreWithName(name);
+    @PostMapping(value = "/genre/add", consumes = "application/json")
+    public ResponseEntity<String> addGenre(@RequestBody Genre genre) {
+        genreService.createNewGenre(genre);
         return ResponseEntity.ok("{}");
     }
 }

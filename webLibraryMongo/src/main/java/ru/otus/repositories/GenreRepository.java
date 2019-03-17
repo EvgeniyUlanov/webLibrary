@@ -1,13 +1,12 @@
 package ru.otus.repositories;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Genre;
 
-import java.util.Optional;
-
 @Repository
-public interface GenreRepository extends MongoRepository<Genre, String> {
+public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
-    Optional<Genre> findByName(String genre);
+    Mono<Genre> findByName(String genre);
 }

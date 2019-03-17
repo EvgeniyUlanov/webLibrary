@@ -1,11 +1,11 @@
 package ru.otus.controllers;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
-
-import java.util.List;
 
 @RestController
 public class AuthorController {
@@ -17,18 +17,18 @@ public class AuthorController {
     }
 
     @GetMapping(value = "/author/getAll")
-    public List<Author> getAll() {
+    public Flux<Author> getAll() {
         return authorService.getAll();
     }
 
-    @PostMapping(value = "/author/add")
-    public ResponseEntity<String> addAuthor(@RequestParam(name = "authorName") String name) {
-        authorService.addNewAuthorWithName(name);
+    @PostMapping(value = "/author/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> addAuthor(@RequestBody Author author) {
+        authorService.addNewAuthor(author);
         return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/author/findByName")
-    public List<Author> findByName(@RequestParam(name = "authorName") String authorName) {
+    public Flux<Author> findByName(@RequestParam(name = "authorName") String authorName) {
         return authorService.findByNameContains(authorName);
     }
 }

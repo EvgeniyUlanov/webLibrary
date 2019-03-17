@@ -1,13 +1,11 @@
 package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Author;
-import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.repositories.AuthorRepository;
 import ru.otus.services.AuthorService;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -19,28 +17,22 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAll() {
+    public Flux<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
-    public boolean addNewAuthorWithName(String name) {
-        try {
-            authorRepository.save(new Author(name));
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return false;
+    public Mono<Author> findByName(String authorName) {
+        return authorRepository.findByName(authorName);
     }
 
     @Override
-    public List<Author> findByName(String authorName) {
-        return Collections.singletonList(authorRepository.findByName(authorName).orElseThrow(() ->new EntityNotFoundException("author not found")));
-    }
-
-    @Override
-    public List<Author> findByNameContains(String authorName) {
+    public Flux<Author> findByNameContains(String authorName) {
         return authorRepository.findByNameContains(authorName);
+    }
+
+    @Override
+    public void addNewAuthor(Author author) {
+        authorRepository.save(author).subscribe();
     }
 }

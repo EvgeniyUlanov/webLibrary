@@ -1,16 +1,16 @@
 package ru.otus.services;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Author;
-
-import java.util.List;
 
 public interface AuthorService {
 
-    List<Author> getAll();
+    Flux<Author> getAll();
 
-    boolean addNewAuthorWithName(String name);
+    Mono<Author> findByName(String authorName);
 
-    List<Author> findByName(String authorName);
+    Flux<Author> findByNameContains(String authorName);
 
-    List<Author> findByNameContains(String authorName);
+    void addNewAuthor(Author author);
 }

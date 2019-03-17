@@ -1,12 +1,13 @@
 package ru.otus.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Book;
+import ru.otus.dto.BookContainerDto;
+import ru.otus.dto.CommentContainerDto;
 import ru.otus.services.BookService;
-
-import java.util.List;
 
 @RestController
 public class BookController {
@@ -18,59 +19,51 @@ public class BookController {
     }
 
     @GetMapping(value = "/book/all")
-    public List<Book> getAll() {
+    public Flux<Book> getAll() {
         return bookService.getAllBooks();
     }
 
     @PostMapping(value = "/book/add")
-    public ResponseEntity<String> addBook(
-            @RequestParam(value = "bookName") String bookName,
-            @RequestParam(value = "authorName") String authorName,
-            @RequestParam(value = "genreName") String genreName) {
-        bookService.addBook(bookName, genreName, authorName);
+    public ResponseEntity<String> addBook(@RequestBody BookContainerDto bookDto) {
+        bookService.addBook(bookDto.getBookName(), bookDto.getGenreName(), bookDto.getAuthorName());
         return ResponseEntity.ok("{}");
     }
 
-    @PostMapping(value = "/book/delete")
-    public ResponseEntity<String> deleteBook(@RequestParam(value = "book_id") String id) {
+    @DeleteMapping(value = "/book/delete/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable(value = "id") String id) {
         bookService.deleteBook(id);
         return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/book/info")
-    public Book getBookInfo(@RequestParam(value = "book_id") String id) {
+    public Mono<Book> getBookInfo(@RequestParam(value = "book_id") String id) {
         return bookService.getBookById(id);
     }
 
     @PostMapping(value = "/book/addComment")
-    public ResponseEntity<String> addCommentToBook(
-            @RequestParam(value = "comment") String comment,
-            @RequestParam(value = "book_id") String bookId) {
-        bookService.addCommentToBook(bookId, comment);
+    public ResponseEntity<String> addCommentToBook(@RequestBody CommentContainerDto commentDto) {
+        bookService.addCommentToBook(commentDto.getBookId(), commentDto.getComment());
         return ResponseEntity.ok("{}");
     }
 
     @PostMapping(value = "/book/addAuthorToBook")
-    public ResponseEntity<String> addAuthorToBook(
-            @RequestParam(value = "book_id") String bookId,
-            @RequestParam(value = "authorName") String authorName,
-            Model model) {
-        bookService.addAuthorToBook(bookId, authorName);
+    public ResponseEntity<String> addAuthorToBook(@RequestBody BookContainerDto bookDto) {
+        bookService.addAuthorToBook(bookDto.getBookId(), bookDto.getAuthorName());
         return ResponseEntity.ok("{}");
     }
 
     @GetMapping(value = "/book/findByAuthor")
-    public List<Book> findByAuthor(@RequestParam(value = "authorName") String authorName) {
+    public Flux<Book> findByAuthor(@RequestParam(value = "authorName") String authorName) {
         return bookService.getBookByAuthor(authorName);
     }
 
     @GetMapping(value = "/book/findByGenre")
-    public List<Book> findByGenre(@RequestParam(value = "genreName") String genreName) {
+    public Flux<Book> findByGenre(@RequestParam(value = "genreName") String genreName) {
         return bookService.getBookByGenre(genreName);
     }
 
     @GetMapping(value = "book/findByName")
-    public List<Book> findByName(@RequestParam(value = "bookName") String bookName) {
+    public Flux<Book> findByName(@RequestParam(value = "bookName") String bookName) {
         return bookService.getBookByName(bookName);
     }
 }

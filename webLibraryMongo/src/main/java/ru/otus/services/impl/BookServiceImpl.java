@@ -1,17 +1,17 @@
 package ru.otus.services.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.exeptions.EntityNotFoundException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
+import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.repositories.AuthorRepository;
 import ru.otus.repositories.BookRepository;
 import ru.otus.repositories.GenreRepository;
 import ru.otus.services.BookService;
-
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -29,23 +29,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBookByName(String bookName) {
+    public Flux<Book> getBookByName(String bookName) {
         return bookRepository.findByNameContains(bookName);
     }
 
     @Override
-    public Book getBookById(String id) {
-        return bookRepository.findById(id).orElse(null);
+    public Mono<Book> getBookById(String id) {
+        return bookRepository.findById(id);
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public Flux<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Override
-    public List<Book> getBookByGenre(String genreName) {
-        Genre genre = genreRepository.findByName(genreName).orElseThrow(() -> new EntityNotFoundException("genre not found"));
+    public Flux<Book> getBookByGenre(String genreName) {
+        Mono<Genre> genre = genreRepository.findByName(genreName);
         return bookRepository.findByGenre(genre);
     }
 
@@ -53,50 +53,48 @@ public class BookServiceImpl implements BookService {
     public void addBook(String bookName, String genre, String authorName) {
         Genre foundedGenre = genreRepository
                 .findByName(genre)
+                .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("genre not found"));
-        Author foundedAuthor;
-        try {
-            foundedAuthor = authorRepository
-                    .findByName(authorName)
-                    .orElseThrow(() -> new EntityNotFoundException("author not found"));
-        } catch (EntityNotFoundException e) {
-            foundedAuthor = new Author(authorName);
-            authorRepository.save(foundedAuthor);
-        }
+        Author author = authorRepository
+                .findByName(authorName)
+                .blockOptional()
+                .orElse(authorRepository.save(new Author(authorName)).block());
         Book book = new Book(foundedGenre, bookName);
-        book.getAuthors().add(foundedAuthor);
-        bookRepository.save(book);
+        book.getAuthors().add(author);
+        bookRepository.save(book).subscribe();
     }
 
     @Override
-    public List<Book> getBookByAuthor(String authorName) {
-        Author author = authorRepository.findByName(authorName).orElseThrow(() -> new EntityNotFoundException("author not found"));
-        return bookRepository.findByAuthorsContains(author);
+    public Flux<Book> getBookByAuthor(String authorName) {
+        return bookRepository.findByAuthorsContains(authorRepository.findByName(authorName));
     }
 
     @Override
     public void addCommentToBook(String bookId, String comment) {
         Book book = bookRepository
                 .findById(bookId)
+                .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         book.getComments().add(new Comment(comment));
-        bookRepository.save(book);
+        bookRepository.save(book).subscribe();
     }
 
     @Override
     public void deleteBook(String id) {
-        bookRepository.deleteById(id);
+        bookRepository.deleteById(id).subscribe();
     }
 
     @Override
     public void addAuthorToBook(String bookId, String authorName) {
         Book book = bookRepository
                 .findById(bookId)
+                .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         Author author = authorRepository
                 .findByName(authorName)
+                .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("author not found"));
         book.getAuthors().add(author);
-        bookRepository.save(book);
+        bookRepository.save(book).subscribe();
     }
 }

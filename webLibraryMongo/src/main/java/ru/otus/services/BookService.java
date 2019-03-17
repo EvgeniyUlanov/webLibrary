@@ -1,22 +1,22 @@
 package ru.otus.services;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Book;
-
-import java.util.List;
 
 public interface BookService {
 
-    List<Book> getBookByName(String bookName);
+    Flux<Book> getBookByName(String bookName);
 
-    Book getBookById(String id);
+    Mono<Book> getBookById(String id);
 
-    List<Book> getAllBooks();
+    Flux<Book> getAllBooks();
 
-    List<Book> getBookByGenre(String genre);
+    Flux<Book> getBookByGenre(String genre);
 
     void addBook(String bookName, String genre, String authorName);
 
-    List<Book> getBookByAuthor(String authorName);
+    Flux<Book> getBookByAuthor(String authorName);
 
     void addCommentToBook(String bookId, String comment);
 

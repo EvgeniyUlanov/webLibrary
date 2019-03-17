@@ -99,9 +99,8 @@ function buttonInfoHandler() {
 function buttonDeleteHandler() {
     var bookId = $(this).val();
     $.ajax({
-        type: 'POST',
-        url: 'book/delete',
-        data: {'book_id': bookId},
+        type: 'DELETE',
+        url: 'book/delete/' + bookId,
         success: function () {
             fillBooksTable();
         }
@@ -142,7 +141,8 @@ function addComment() {
         $.ajax({
             type: 'POST',
             url: 'book/addComment',
-            data: {'book_id': bookId, 'comment': comment},
+            data: JSON.stringify({'bookId': bookId, 'comment': comment}),
+            contentType: 'application/json',
             success: function () {
                 getBookInfo(bookId);
             },
@@ -160,7 +160,8 @@ function addAuthorToBook() {
         $.ajax({
             type: 'POST',
             url: 'book/addAuthorToBook',
-            data: {'book_id': bookId, 'authorName': authorName},
+            data: JSON.stringify({'bookId': bookId, 'authorName': authorName}),
+            contentType: 'application/json',
             success: function () {
                 getBookInfo(bookId);
             },
@@ -178,7 +179,8 @@ function addBook() {
     $.ajax({
         type: 'POST',
         url: 'book/add',
-        data: {'bookName': bookName, 'authorName': authorName, 'genreName': genre},
+        data: JSON.stringify({'bookName': bookName, 'authorName': authorName, 'genreName': genre}),
+        contentType: 'application/json',
         success: function () {
             fillBooksTable();
         }
@@ -192,7 +194,8 @@ function addGenre() {
         $.ajax({
             type: 'POST',
             url: 'genre/add',
-            data: {'genreName': genreName},
+            data: JSON.stringify({"name": genreName}),
+            contentType: 'application/json',
             success: function () {
                 fillGenresTable();
                 $('#genreContainer_message').addClass('successAction').append($('<span>').text('genre was added'));
@@ -211,7 +214,8 @@ function addAuthor() {
         $.ajax({
             type: 'POST',
             url: 'author/add',
-            data: {'authorName': authorName},
+            data: JSON.stringify({'name': authorName}),
+            contentType: 'application/json',
             success: function () {
                 fillAuthorsTable();
                 $('#authorContainer_message').addClass('successAction').append($('<span>').text('author was added'));
