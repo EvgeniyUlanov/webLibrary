@@ -1,5 +1,6 @@
 package ru.otus.controllers;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import ru.otus.services.GenreService;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(GenreController.class)
+@DisplayName("genre controller test")
 class GenreControllerTest {
 
     @Autowired
@@ -23,7 +25,8 @@ class GenreControllerTest {
     private GenreService genreService;
 
     @Test
-    void getAllGenres() {
+    @DisplayName("test when genre/getAll that status is ok")
+    void testGetAllGenres() {
         webClient
                 .get().uri("/genre/getAll")
                 .exchange()
@@ -31,7 +34,8 @@ class GenreControllerTest {
     }
 
     @Test
-    void addGenre() {
+    @DisplayName("test when genre/add that status is ok")
+    void testAddGenre() {
         webClient
                 .post().uri("/genre/add")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
