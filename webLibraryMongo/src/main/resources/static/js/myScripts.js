@@ -181,6 +181,7 @@ function addBook() {
         url: 'book/add',
         data: JSON.stringify({'bookName': bookName, 'authorName': authorName, 'genreName': genre}),
         contentType: 'application/json',
+        async: false,
         success: function () {
             fillBooksTable();
         }

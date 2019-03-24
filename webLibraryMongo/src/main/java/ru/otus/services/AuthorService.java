@@ -12,5 +12,5 @@ public interface AuthorService {
 
     Flux<Author> findByNameContains(String authorName);
 
-    void addNewAuthor(Author author);
+    Mono<Author> addNewAuthor(Author author);
 }

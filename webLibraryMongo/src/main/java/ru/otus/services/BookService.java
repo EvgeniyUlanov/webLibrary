@@ -14,13 +14,13 @@ public interface BookService {
 
     Flux<Book> getBookByGenre(String genre);
 
-    void addBook(String bookName, String genre, String authorName);
+    Mono<Book> addBook(String bookName, String genre, String authorName);
 
     Flux<Book> getBookByAuthor(String authorName);
 
-    void addCommentToBook(String bookId, String comment);
+    Mono<Book> addCommentToBook(String bookId, String comment);
 
-    void deleteBook(String id);
+    Mono<Void> deleteBook(String id);
 
-    void addAuthorToBook(String bookId, String authorName);
+    Mono<Book> addAuthorToBook(String bookId, String authorName);
 }

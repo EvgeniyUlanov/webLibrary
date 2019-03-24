@@ -50,7 +50,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBook(String bookName, String genre, String authorName) {
+    public Mono<Book> addBook(String bookName, String genre, String authorName) {
         Genre foundedGenre = genreRepository
                 .findByName(genre)
                 .blockOptional()
@@ -58,10 +58,13 @@ public class BookServiceImpl implements BookService {
         Author author = authorRepository
                 .findByName(authorName)
                 .blockOptional()
-                .orElse(authorRepository.save(new Author(authorName)).block());
+                .orElse(null);
+        if (author == null) {
+            author = authorRepository.save(new Author(authorName)).block();
+        }
         Book book = new Book(foundedGenre, bookName);
         book.getAuthors().add(author);
-        bookRepository.save(book).subscribe();
+        return bookRepository.save(book);
     }
 
     @Override
@@ -70,22 +73,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addCommentToBook(String bookId, String comment) {
+    public Mono<Book> addCommentToBook(String bookId, String comment) {
         Book book = bookRepository
                 .findById(bookId)
                 .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         book.getComments().add(new Comment(comment));
-        bookRepository.save(book).subscribe();
+        return bookRepository.save(book);
     }
 
     @Override
-    public void deleteBook(String id) {
-        bookRepository.deleteById(id).subscribe();
+    public Mono<Void> deleteBook(String id) {
+        return bookRepository.deleteById(id);
     }
 
     @Override
-    public void addAuthorToBook(String bookId, String authorName) {
+    public Mono<Book> addAuthorToBook(String bookId, String authorName) {
         Book book = bookRepository
                 .findById(bookId)
                 .blockOptional()
@@ -95,6 +98,6 @@ public class BookServiceImpl implements BookService {
                 .blockOptional()
                 .orElseThrow(() -> new EntityNotFoundException("author not found"));
         book.getAuthors().add(author);
-        bookRepository.save(book).subscribe();
+        return bookRepository.save(book);
     }
 }

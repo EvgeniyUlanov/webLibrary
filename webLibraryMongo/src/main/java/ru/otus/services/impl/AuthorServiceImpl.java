@@ -32,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void addNewAuthor(Author author) {
-        authorRepository.save(author).subscribe();
+    public Mono<Author> addNewAuthor(Author author) {
+        return authorRepository.save(author);
     }
 }
