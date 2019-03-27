@@ -2,15 +2,12 @@ package ru.otus.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.domain.Book;
 import ru.otus.dto.BookContainerDto;
 import ru.otus.dto.CommentContainerDto;
 import ru.otus.services.BookService;
-
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @RestController
 public class BookController {
@@ -28,12 +25,16 @@ public class BookController {
 
     @PostMapping(value = "/book/add")
     public Mono<HttpStatus> addBook(@RequestBody BookContainerDto bookDto) {
-        return bookService.addBook(bookDto.getBookName(), bookDto.getGenreName(), bookDto.getAuthorName()).thenReturn(HttpStatus.OK);
+        return bookService
+                .addBook(bookDto.getBookName(), bookDto.getGenreName(), bookDto.getAuthorName())
+                .thenReturn(HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/book/delete/{id}")
-    public Mono<ServerResponse> deleteBook(@PathVariable(value = "id") String id) {
-        return bookService.deleteBook(id).then(ok().build());
+    public Mono<HttpStatus> deleteBook(@PathVariable(value = "id") String id) {
+        return bookService
+                .deleteBook(id)
+                .thenReturn(HttpStatus.OK);
     }
 
     @GetMapping(value = "/book/info")
@@ -42,13 +43,17 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/addComment")
-    public Mono<ServerResponse> addCommentToBook(@RequestBody CommentContainerDto commentDto) {
-        return bookService.addCommentToBook(commentDto.getBookId(), commentDto.getComment()).then(ok().build());
+    public Mono<HttpStatus> addCommentToBook(@RequestBody CommentContainerDto commentDto) {
+        return bookService
+                .addCommentToBook(commentDto.getBookId(), commentDto.getComment())
+                .thenReturn(HttpStatus.OK);
     }
 
     @PostMapping(value = "/book/addAuthorToBook")
-    public Mono<ServerResponse> addAuthorToBook(@RequestBody BookContainerDto bookDto) {
-        return bookService.addAuthorToBook(bookDto.getBookId(), bookDto.getAuthorName()).then(ok().build());
+    public Mono<HttpStatus> addAuthorToBook(@RequestBody BookContainerDto bookDto) {
+        return bookService
+                .addAuthorToBook(bookDto.getBookId(), bookDto.getAuthorName())
+                .thenReturn(HttpStatus.OK);
     }
 
     @GetMapping(value = "/book/findByAuthor")
