@@ -16,12 +16,12 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-    @GetMapping(value = "/genre/getAll")
+    @GetMapping(value = "/genre")
     public Flux<Genre> getAllGenres() {
         return genreService.getAll();
     }
 
-    @PostMapping(value = "/genre/add", consumes = "application/json")
+    @PostMapping(value = "/genre", consumes = "application/json")
     public Mono<HttpStatus> addGenre(@RequestBody Genre genre) {
         return genreService
                 .createNewGenre(genre)

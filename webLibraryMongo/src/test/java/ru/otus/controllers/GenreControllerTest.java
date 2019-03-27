@@ -10,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Genre;
 import ru.otus.services.GenreService;
+
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(GenreController.class)
@@ -28,7 +31,7 @@ class GenreControllerTest {
     @DisplayName("test when genre/getAll that status is ok")
     void testGetAllGenres() {
         webClient
-                .get().uri("/genre/getAll")
+                .get().uri("/genre")
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -36,10 +39,13 @@ class GenreControllerTest {
     @Test
     @DisplayName("test when genre/add that status is ok")
     void testAddGenre() {
+        Genre genre = new Genre("test");
+        when(genreService.createNewGenre(genre)).thenReturn(Mono.just(genre));
+
         webClient
-                .post().uri("/genre/add")
+                .post().uri("/genre")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(BodyInserters.fromObject(new Genre()))
+                .body(BodyInserters.fromObject(genre))
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -10,7 +10,7 @@ $(document).ready(function () {
 });
 
 function fillBooksTable() {
-    fillBookTableWithRequest('book/all', {});
+    fillBookTableWithRequest('book', {});
 }
 
 function fillBookTableWithRequest(url, data) {
@@ -47,7 +47,7 @@ function fillBookTableWithRequest(url, data) {
 }
 
 function fillAuthorsTable() {
-    fillAuthorsByRequest('author/getAll', {});
+    fillAuthorsByRequest('author', {});
 }
 
 function fillAuthorsByRequest(url, data) {
@@ -80,7 +80,7 @@ function fillGenresTable() {
     $('#bookPage_selectGenre').find('.removable').remove();
     $.ajax({
         type: 'GET',
-        url: 'genre/getAll',
+        url: 'genre',
         success: function (response) {
             $.each(response, function (index, genre) {
                 $('#bookPage_selectGenre').append($('<option>').addClass('removable').val(genre.name).text(genre.name));
@@ -100,7 +100,7 @@ function buttonDeleteHandler() {
     var bookId = $(this).val();
     $.ajax({
         type: 'DELETE',
-        url: 'book/delete/' + bookId,
+        url: 'book/' + bookId,
         success: function () {
             fillBooksTable();
         }
@@ -110,8 +110,7 @@ function buttonDeleteHandler() {
 function getBookInfo(bookId) {
     $.ajax({
         type: 'GET',
-        url: 'book/info',
-        data: {'book_id': bookId},
+        url: 'book/' + bookId,
         success: function (book) {
             $('#bookInfo_bookName').text(book.name);
             $('#bookInfo_genre').text(book.genre.name);
@@ -178,7 +177,7 @@ function addBook() {
     var genre = $('#bookPage_selectGenre').val();
     $.ajax({
         type: 'POST',
-        url: 'book/add',
+        url: 'book',
         data: JSON.stringify({'bookName': bookName, 'authorName': authorName, 'genreName': genre}),
         contentType: 'application/json',
         async: false,
@@ -194,7 +193,7 @@ function addGenre() {
     if (genreName !== '') {
         $.ajax({
             type: 'POST',
-            url: 'genre/add',
+            url: 'genre',
             data: JSON.stringify({"name": genreName}),
             contentType: 'application/json',
             success: function () {
@@ -214,7 +213,7 @@ function addAuthor() {
     if (authorName !== '') {
         $.ajax({
             type: 'POST',
-            url: 'author/add',
+            url: 'author',
             data: JSON.stringify({'name': authorName}),
             contentType: 'application/json',
             success: function () {

@@ -10,8 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
+
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(AuthorController.class)
@@ -28,7 +31,7 @@ class AuthorControllerTest {
     @DisplayName("test get all authors")
     void testGetAll() {
         webClient
-                .get().uri("/author/getAll")
+                .get().uri("/author")
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -36,10 +39,13 @@ class AuthorControllerTest {
     @Test
     @DisplayName("test add author")
     void testAddAuthor() {
+        Author author = new Author("test");
+        when(authorService.addNewAuthor(author)).thenReturn(Mono.just(author));
+
         webClient
-                .post().uri("/author/add")
+                .post().uri("/author")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(BodyInserters.fromObject(new Author("test")))
+                .body(BodyInserters.fromObject(author))
                 .exchange()
                 .expectStatus().isOk();
     }
