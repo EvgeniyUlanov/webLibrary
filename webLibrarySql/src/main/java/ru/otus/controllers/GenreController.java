@@ -16,12 +16,12 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-    @GetMapping(value = "/genre/getAll")
+    @GetMapping(value = "/genre")
     public List<Genre> getAllGenres() {
         return genreService.getAll();
     }
 
-    @PostMapping(value = "/genre/add")
+    @PostMapping(value = "/genre")
     public ResponseEntity<String> addGenre(@RequestParam(name = "genreName") String name) {
         genreService.addNewGenreWithName(name);
         return ResponseEntity.ok("{}");

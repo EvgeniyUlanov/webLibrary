@@ -16,12 +16,12 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping(value = "/author/getAll")
+    @GetMapping(value = "/author")
     public List<Author> getAll() {
         return authorService.getAll();
     }
 
-    @PostMapping(value = "/author/add")
+    @PostMapping(value = "/author")
     public ResponseEntity<String> addAuthor(@RequestParam(name = "authorName") String name) {
         authorService.addNewAuthorWithName(name);
         return ResponseEntity.ok("{}");

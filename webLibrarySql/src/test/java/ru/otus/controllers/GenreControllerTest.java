@@ -28,7 +28,7 @@ class GenreControllerTest {
     @Test
     void getAllGenres() throws Exception {
         mvc
-                .perform(get("/genre/getAll"))
+                .perform(get("/genre"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -40,7 +40,7 @@ class GenreControllerTest {
     @Test
     void addGenre() throws Exception {
         mvc
-                .perform(post("/genre/add").param("genreName", "genre"))
+                .perform(post("/genre").param("genreName", "genre"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )

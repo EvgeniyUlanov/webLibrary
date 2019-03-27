@@ -17,12 +17,12 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping(value = "/book/all")
+    @GetMapping(value = "/book")
     public List<Book> getAll() {
         return bookService.getAllBooks();
     }
 
-    @PostMapping(value = "/book/add")
+    @PostMapping(value = "/book")
     public ResponseEntity<String> addBook(
             @RequestParam(value = "bookName") String bookName,
             @RequestParam(value = "authorName") String authorName,
@@ -31,14 +31,14 @@ public class BookController {
         return ResponseEntity.ok("{}");
     }
 
-    @PostMapping(value = "/book/delete")
-    public ResponseEntity<String> deleteBook(@RequestParam(value = "book_id") Long id) {
+    @DeleteMapping(value = "/book/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable(value = "id") Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.ok("{}");
     }
 
-    @GetMapping(value = "/book/info")
-    public Book getBookInfo(@RequestParam(value = "book_id") Long id) {
+    @GetMapping(value = "/book/{id}")
+    public Book getBookInfo(@PathVariable(value = "id") Long id) {
         return bookService.getBookById(id);
     }
 

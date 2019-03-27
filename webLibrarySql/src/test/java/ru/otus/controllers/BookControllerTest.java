@@ -30,7 +30,7 @@ class BookControllerTest {
     @Test
     void getAll() throws Exception {
         mvc
-                .perform(get("/book/all"))
+                .perform(get("/book"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -42,7 +42,7 @@ class BookControllerTest {
     @Test
     void addBook() throws Exception {
         mvc
-                .perform(post("/book/add")
+                .perform(post("/book")
                         .param("bookName", "book name")
                         .param("authorName", "author")
                         .param("genreName", "genre"))
@@ -56,7 +56,7 @@ class BookControllerTest {
     @Test
     void deleteBook() throws Exception {
         mvc
-                .perform(post("/book/delete").param("book_id", "1"))
+                .perform(delete("/book/1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )
@@ -68,7 +68,7 @@ class BookControllerTest {
     void getBookInfo() throws Exception {
         when(bookService.getBookById(1L)).thenReturn(new Book(new Genre("genre"), "book"));
         mvc
-                .perform(get("/book/info").param("book_id", "1"))
+                .perform(get("/book/1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)

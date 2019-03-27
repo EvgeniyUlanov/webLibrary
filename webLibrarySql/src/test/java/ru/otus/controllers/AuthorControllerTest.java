@@ -28,7 +28,7 @@ class AuthorControllerTest {
     @Test
     void getAll() throws Exception {
         mvc
-                .perform(get("/author/getAll"))
+                .perform(get("/author"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -40,7 +40,7 @@ class AuthorControllerTest {
     @Test
     void addAuthor() throws Exception {
         mvc
-                .perform(post("/author/add").param("authorName", "new author"))
+                .perform(post("/author").param("authorName", "new author"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )
