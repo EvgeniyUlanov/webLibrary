@@ -280,3 +280,13 @@ function showAllBooks() {
     fillBooksTable();
     showBookContainer();
 }
+
+function logout() {
+    $.ajax({
+        type: "POST",
+        url: "/logout",
+        success: function () {
+            
+        }
+    });
+}

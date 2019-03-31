@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -54,6 +55,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void deleteBook() throws Exception {
         mvc
                 .perform(delete("/book/1"))
@@ -65,6 +70,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void getBookInfo() throws Exception {
         when(bookService.getBookById(1L)).thenReturn(new Book(new Genre("genre"), "book"));
         mvc
@@ -78,6 +87,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void addCommentToBook() throws Exception {
         mvc
                 .perform(post("/book/addComment")
@@ -91,6 +104,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void addAuthorToBook() throws Exception {
         mvc
                 .perform(post("/book/addAuthorToBook")
@@ -104,6 +121,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void findByAuthor() throws Exception {
         mvc
                 .perform(get("/book/findByAuthor").param("authorName", "author"))
@@ -116,6 +137,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void findByGenre() throws Exception {
         mvc
                 .perform(get("/book/findByGenre").param("genreName", "genre"))

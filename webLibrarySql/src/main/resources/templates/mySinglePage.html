@@ -22,6 +22,12 @@
                 <button class="btn btn-info nav-item" onclick="showAllBooks()">Books</button>
             </a>
         </div>
+        <div>
+            <span th:text="'you are logged as ' + ${userName}">You are not logged</span>
+            <form action="/logout">
+                <input class="btn btn-primary" type="submit" value="Logout"/>
+            </form>
+        </div>
     </nav>
 </div>
 
