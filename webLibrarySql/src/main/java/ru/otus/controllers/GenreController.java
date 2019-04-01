@@ -21,7 +21,7 @@ public class GenreController {
         return genreService.getAll();
     }
 
-    @PostMapping(value = "/genre")
+    @PostMapping(value = "/admin/genre")
     public ResponseEntity<String> addGenre(@RequestParam(name = "genreName") String name) {
         genreService.addNewGenreWithName(name);
         return ResponseEntity.ok("{}");

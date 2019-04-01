@@ -14,13 +14,19 @@
     <div class="row h-100 justify-content-center align-items-center">
         <div class="card">
             <h2>Welcome to our extra cool library</h2>
-            <h2>Please login or register</h2>
+            <h2>Please log in</h2>
             <form action="/login">
                 <input type="submit" class="btn btn-primary form-control mt-3" value="Login"/>
             </form>
-            <form>
+            <h2>Or register</h2>
+            <form action="/register" method="post">
+                <input type="text" name="user_name" placeholder="enter name"/>
+                <input type="text" name="password" placeholder="enter password">
                 <input type="submit" class="btn btn-primary form-control mt-3" value="Register"/>
             </form>
+            <div>
+                <span th:text="${message}"></span>
+            </div>
         </div>
     </div>
 </div>

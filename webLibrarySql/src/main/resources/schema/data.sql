@@ -59,3 +59,23 @@ INSERT INTO authors_books(author_id, book_id) VALUES (
   (SELECT author_id FROM authors WHERE author_name = 'Evgeniy Petrov'),
   (SELECT book_id FROM books WHERE book_name = 'Golden calf')
 );
+
+INSERT INTO users(user_name, password) VALUES (
+  'admin', 'admin'
+);
+INSERT INTO users(user_name, password) VALUES (
+  'user', 'user'
+);
+
+INSERT INTO roles(role) VALUES ('ROLE_ADMIN');
+INSERT INTO roles(role) VALUES ('ROLE_USER');
+
+INSERT INTO users_roles(user_id, role_id) VALUES (
+  (SELECT user_id FROM users WHERE user_name = 'admin'),
+  (SELECT role_id FROM roles WHERE role = 'ROLE_ADMIN')
+);
+
+INSERT INTO users_roles(user_id, role_id) VALUES (
+  (SELECT user_id FROM users WHERE user_name = 'user'),
+  (SELECT role_id FROM roles WHERE role = 'ROLE_USER')
+);

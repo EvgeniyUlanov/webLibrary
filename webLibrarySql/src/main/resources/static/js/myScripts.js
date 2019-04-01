@@ -97,7 +97,7 @@ function buttonDeleteHandler() {
     var bookId = $(this).val();
     $.ajax({
         type: 'DELETE',
-        url: 'book/' + bookId,
+        url: 'admin/book/' + bookId,
         success: function () {
             fillBooksTable();
         }
@@ -186,7 +186,7 @@ function addGenre() {
     if (genreName !== '') {
         $.ajax({
             type: 'POST',
-            url: 'genre',
+            url: 'admin/genre',
             data: {'genreName': genreName},
             success: function () {
                 fillGenresTable();
