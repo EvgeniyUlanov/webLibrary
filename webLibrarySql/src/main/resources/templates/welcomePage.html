@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+    <title>Library</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css"
+          th:href="@{~/webjars/bootstrap/4.1.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/myStyles.css" th:href="@{~/css/myStyles.css}"/>
+    <script src="../static/js/jquery.min.js" th:src="@{~/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+    <script src="../static/js/myScripts.js" th:src="@{~/js/myScripts.js}"></script>
+</head>
+<body>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="card">
+            <h2>Welcome to our extra cool library</h2>
+            <h2>Please log in</h2>
+            <form action="/login">
+                <input type="submit" class="btn btn-primary form-control mt-3" value="Login"/>
+            </form>
+            <h2>Or register</h2>
+            <form action="/register" method="post">
+                <input type="text" name="user_name" placeholder="enter name"/>
+                <input type="text" name="password" placeholder="enter password">
+                <input type="submit" class="btn btn-primary form-control mt-3" value="Register"/>
+            </form>
+            <div>
+                <span th:text="${message}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

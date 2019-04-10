@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -25,10 +26,13 @@ class AuthorControllerTest {
     @MockBean
     private AuthorService authorService;
 
+    @MockBean
+    private UserDetailsService userDetailsService;
+
     @Test
     void getAll() throws Exception {
         mvc
-                .perform(get("/author/getAll"))
+                .perform(get("/author"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -40,7 +44,7 @@ class AuthorControllerTest {
     @Test
     void addAuthor() throws Exception {
         mvc
-                .perform(post("/author/add").param("authorName", "new author"))
+                .perform(post("/author").param("authorName", "new author"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )

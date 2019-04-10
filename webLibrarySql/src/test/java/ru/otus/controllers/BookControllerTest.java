@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,10 +29,13 @@ class BookControllerTest {
     @MockBean
     private BookService bookService;
 
+    @MockBean
+    private UserDetailsService userDetailsService;
+
     @Test
     void getAll() throws Exception {
         mvc
-                .perform(get("/book/all"))
+                .perform(get("/book"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -42,7 +47,7 @@ class BookControllerTest {
     @Test
     void addBook() throws Exception {
         mvc
-                .perform(post("/book/add")
+                .perform(post("/book")
                         .param("bookName", "book name")
                         .param("authorName", "author")
                         .param("genreName", "genre"))
@@ -54,9 +59,13 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void deleteBook() throws Exception {
         mvc
-                .perform(post("/book/delete").param("book_id", "1"))
+                .perform(delete("/admin/book/1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )
@@ -65,10 +74,14 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void getBookInfo() throws Exception {
         when(bookService.getBookById(1L)).thenReturn(new Book(new Genre("genre"), "book"));
         mvc
-                .perform(get("/book/info").param("book_id", "1"))
+                .perform(get("/book/1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -78,6 +91,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void addCommentToBook() throws Exception {
         mvc
                 .perform(post("/book/addComment")
@@ -91,6 +108,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void addAuthorToBook() throws Exception {
         mvc
                 .perform(post("/book/addAuthorToBook")
@@ -104,6 +125,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void findByAuthor() throws Exception {
         mvc
                 .perform(get("/book/findByAuthor").param("authorName", "author"))
@@ -116,6 +141,10 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     void findByGenre() throws Exception {
         mvc
                 .perform(get("/book/findByGenre").param("genreName", "genre"))
