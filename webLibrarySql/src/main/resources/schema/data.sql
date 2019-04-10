@@ -61,10 +61,10 @@ INSERT INTO authors_books(author_id, book_id) VALUES (
 );
 
 INSERT INTO users(user_name, password) VALUES (
-  'admin', 'admin'
+  'admin', '$2a$10$xZuLs1qEyJe6s6VIa9yFyu8EUvWYJlJ.JP8Hn7F4I1UhVIC/iGrqe'  -- admin
 );
 INSERT INTO users(user_name, password) VALUES (
-  'user', 'user'
+  'user', '$2a$10$zz14WvXPtq11ReCTFMR5u.9byVq6kuAhqVSyeOS6lavWBHcYxGzwy'  -- user
 );
 
 INSERT INTO roles(role) VALUES ('ROLE_ADMIN');

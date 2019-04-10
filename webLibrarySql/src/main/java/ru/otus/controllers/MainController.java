@@ -3,6 +3,7 @@ package ru.otus.controllers;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import ru.otus.services.UserService;
 public class MainController {
 
     private UserService userService;
+    private PasswordEncoder passwordEncoder;
 
-    public MainController(UserService userService) {
+    public MainController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/lib")
@@ -41,7 +44,8 @@ public class MainController {
             Model model) {
         String message;
         try {
-            userService.addNewUser(new User(userName, password));
+            String encodedPassword = passwordEncoder.encode(password);
+            userService.addNewUser(new User(userName, encodedPassword));
             message = "Registration success";
         } catch (Exception e) {
             e.printStackTrace();
