@@ -97,7 +97,7 @@ function buttonDeleteHandler() {
     var bookId = $(this).val();
     $.ajax({
         type: 'DELETE',
-        url: 'admin/book/' + bookId,
+        url: 'book/' + bookId,
         success: function () {
             fillBooksTable();
         }

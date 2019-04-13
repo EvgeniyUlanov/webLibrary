@@ -50,7 +50,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBook(String bookName, String genre, String authorName) {
+    public Book addBook(String bookName, String genre, String authorName) {
         Genre foundedGenre = genreRepository
                 .findByName(genre)
                 .orElseThrow(() -> new EntityNotFoundException("genre not found"));
@@ -65,7 +65,7 @@ public class BookServiceImpl implements BookService {
         }
         Book book = new Book(foundedGenre, bookName);
         book.getAuthors().add(foundedAuthor);
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Override

@@ -69,6 +69,7 @@ INSERT INTO users(user_name, password) VALUES (
 
 INSERT INTO roles(role) VALUES ('ROLE_ADMIN');
 INSERT INTO roles(role) VALUES ('ROLE_USER');
+INSERT INTO roles(role) VALUES ('ROLE_EDITOR');
 
 INSERT INTO users_roles(user_id, role_id) VALUES (
   (SELECT user_id FROM users WHERE user_name = 'admin'),
@@ -79,3 +80,16 @@ INSERT INTO users_roles(user_id, role_id) VALUES (
   (SELECT user_id FROM users WHERE user_name = 'user'),
   (SELECT role_id FROM roles WHERE role = 'ROLE_USER')
 );
+
+-- acl
+INSERT INTO acl_class (id, class) VALUES
+(1, 'ru.otus.domain.Book'),
+(2, 'ru.otus.domain.Author'),
+(3, 'ru.otus.domain.Genre');
+
+INSERT INTO acl_sid (id, principal, sid) VALUES
+(1, true, 'admin'),
+(2, true, 'user'),
+(3, false, 'ROLE_ADMIN'),
+(4, false, 'ROLE_USER'),
+(5, false, 'ROLE_EDITOR');

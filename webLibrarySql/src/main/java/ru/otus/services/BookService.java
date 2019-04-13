@@ -14,7 +14,7 @@ public interface BookService {
 
     List<Book> getBookByGenre(String genre);
 
-    void addBook(String bookName, String genre, String authorName);
+    Book addBook(String bookName, String genre, String authorName);
 
     List<Book> getBookByAuthor(String authorName);
 
