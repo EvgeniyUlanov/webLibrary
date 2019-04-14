@@ -29,7 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/h2-console/**");
+                .antMatchers("/h2-console/**")
+                .antMatchers("/")
+                .antMatchers("/register");
     }
 
     @Bean
@@ -43,12 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/", "/register").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/lib", "/author/*", "/book/*", "/genre/*").authenticated()
-                .and()
-                .authorizeRequests().antMatchers("/admin/*").hasRole("ADMIN")
-                .and()
                 .authorizeRequests().antMatchers("/logout").authenticated()
                 .and()
                 .formLogin().defaultSuccessUrl("/lib")

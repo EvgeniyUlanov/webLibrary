@@ -186,7 +186,7 @@ function addGenre() {
     if (genreName !== '') {
         $.ajax({
             type: 'POST',
-            url: 'admin/genre',
+            url: 'genre',
             data: {'genreName': genreName},
             success: function () {
                 fillGenresTable();

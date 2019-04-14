@@ -1,6 +1,7 @@
 package ru.otus.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Author;
 import ru.otus.services.AuthorService;
@@ -8,6 +9,7 @@ import ru.otus.services.AuthorService;
 import java.util.List;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class AuthorController {
 
     private AuthorService authorService;
