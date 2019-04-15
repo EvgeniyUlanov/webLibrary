@@ -65,7 +65,7 @@ class BookControllerTest {
     )
     void deleteBook() throws Exception {
         mvc
-                .perform(delete("/admin/book/1"))
+                .perform(delete("/book/1"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )

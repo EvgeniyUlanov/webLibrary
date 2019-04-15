@@ -1,6 +1,7 @@
 package ru.otus.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Genre;
 import ru.otus.services.GenreService;
@@ -17,11 +18,13 @@ public class GenreController {
     }
 
     @GetMapping(value = "/genre")
+    @PreAuthorize("isAuthenticated()")
     public List<Genre> getAllGenres() {
         return genreService.getAll();
     }
 
-    @PostMapping(value = "/admin/genre")
+    @PostMapping(value = "/genre")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> addGenre(@RequestParam(name = "genreName") String name) {
         genreService.addNewGenreWithName(name);
         return ResponseEntity.ok("{}");

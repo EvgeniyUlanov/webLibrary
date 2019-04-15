@@ -49,7 +49,7 @@ class GenreControllerTest {
     )
     void addGenre() throws Exception {
         mvc
-                .perform(post("/admin/genre").param("genreName", "genre"))
+                .perform(post("/genre").param("genreName", "genre"))
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )

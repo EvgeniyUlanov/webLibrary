@@ -69,6 +69,7 @@ INSERT INTO users(user_name, password) VALUES (
 
 INSERT INTO roles(role) VALUES ('ROLE_ADMIN');
 INSERT INTO roles(role) VALUES ('ROLE_USER');
+INSERT INTO roles(role) VALUES ('ROLE_EDITOR');
 
 INSERT INTO users_roles(user_id, role_id) VALUES (
   (SELECT user_id FROM users WHERE user_name = 'admin'),
@@ -76,6 +77,41 @@ INSERT INTO users_roles(user_id, role_id) VALUES (
 );
 
 INSERT INTO users_roles(user_id, role_id) VALUES (
+  (SELECT user_id FROM users WHERE user_name = 'admin'),
+  (SELECT role_id FROM roles WHERE role = 'ROLE_USER')
+);
+
+INSERT INTO users_roles(user_id, role_id) VALUES (
   (SELECT user_id FROM users WHERE user_name = 'user'),
   (SELECT role_id FROM roles WHERE role = 'ROLE_USER')
 );
+
+-- acl
+INSERT INTO acl_class (id, class) VALUES
+(1, 'ru.otus.domain.Book'),
+(2, 'ru.otus.domain.Author'),
+(3, 'ru.otus.domain.Genre');
+
+INSERT INTO acl_sid (id, principal, sid) VALUES
+(1, true, 'admin'),
+(2, true, 'user'),
+(3, false, 'ROLE_ADMIN'),
+(4, false, 'ROLE_USER');
+
+INSERT INTO acl_object_identity (id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting) VALUES
+(1, 1, (SELECT book_id FROM books WHERE book_name = 'Sea Wolf'), NULL, 4, 0),
+(2, 1, (SELECT book_id FROM books WHERE book_name = 'The hearts of three'), NULL, 4, 0),
+(3, 1, (SELECT book_id FROM books WHERE book_name = 'War and peace'), NULL, 4, 0),
+(4, 1, (SELECT book_id FROM books WHERE book_name = 'Anna Karenina'), NULL, 4, 0),
+(5, 1, (SELECT book_id FROM books WHERE book_name = 'Evgeniy Onegin'), NULL, 4, 0),
+(6, 1, (SELECT book_id FROM books WHERE book_name = '12 chairs'), NULL, 4, 0),
+(7, 1, (SELECT book_id FROM books WHERE book_name = 'Golden calf'), NULL, 4, 0);
+
+INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
+(1, 1, 1, 4, 1, 1, 1, 1),
+(2, 2, 1, 4, 1, 1, 1, 1),
+(3, 3, 1, 4, 1, 1, 1, 1),
+(4, 4, 1, 4, 1, 1, 1, 1),
+(5, 5, 1, 4, 1, 1, 1, 1),
+(6, 6, 1, 4, 1, 1, 1, 1),
+(7, 7, 1, 4, 1, 1, 1, 1);
