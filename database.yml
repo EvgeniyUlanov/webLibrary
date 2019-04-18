@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  host: localhost
+  database: library
+  pool: 5
+  username: postgres
+  password: 784512963
