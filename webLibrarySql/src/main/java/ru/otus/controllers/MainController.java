@@ -1,5 +1,8 @@
 package ru.otus.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.restart.RestartEndpoint;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +21,8 @@ public class MainController {
 
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RestartEndpoint restartEndpoint;
 
     public MainController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -54,6 +59,13 @@ public class MainController {
             message = "Registration error";
         }
         model.addAttribute("message", message);
+        return "/welcomePage";
+    }
+
+    @GetMapping("/restart")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String restart() {
+        restartEndpoint.restart();
         return "/welcomePage";
     }
 }

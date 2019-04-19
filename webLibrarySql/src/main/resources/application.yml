@@ -2,6 +2,11 @@ spring:
   profiles:
     active: h2
 
+management:
+  endpoint:
+    restart:
+      enabled: true
+
 ---
 spring:
   profiles: h2
