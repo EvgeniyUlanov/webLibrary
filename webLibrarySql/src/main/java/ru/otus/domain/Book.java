@@ -18,11 +18,11 @@ public class Book {
     @Column(name = "book_name", unique = true)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "authors_books",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "author_id")
@@ -30,7 +30,7 @@ public class Book {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Set<Author> authors = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id", referencedColumnName = "book_id", nullable = false)
     private List<Comment> comments = new ArrayList<>();
 
