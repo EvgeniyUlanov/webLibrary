@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import ru.otus.domain.Book;
+import ru.otus.dto.BookDto;
 import ru.otus.repositories.BookRepository;
 
 import java.util.List;
@@ -42,13 +43,13 @@ public class BatchConfig {
     }
 
     @Bean
-    public ItemProcessor<Book, Book> processor() {
-        return book -> book;
+    public ItemProcessor<Book, BookDto> processor() {
+        return BookDto::dtoFromBook;
     }
 
     @Bean
-    public JsonFileItemWriter<Book> writer() {
-        return new JsonFileItemWriterBuilder<Book>()
+    public JsonFileItemWriter<BookDto> writer() {
+        return new JsonFileItemWriterBuilder<BookDto>()
                 .name("personItemWriter")
                 .resource(new FileSystemResource("outputBook.txt"))
                 .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
@@ -77,9 +78,9 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step1(JsonFileItemWriter<Book> writer, ItemReader<Book> reader, ItemProcessor<Book, Book> itemProcessor) {
+    public Step step1(JsonFileItemWriter<BookDto> writer, ItemReader<Book> reader, ItemProcessor<Book, BookDto> itemProcessor) {
         return stepBuilderFactory.get("step1")
-                .<Book, Book>chunk(10)
+                .<Book, BookDto>chunk(10)
                 .reader(reader)
                 .processor(itemProcessor)
                 .writer(writer)
