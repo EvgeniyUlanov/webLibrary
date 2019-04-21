@@ -8,16 +8,24 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.item.*;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
+import org.springframework.batch.item.json.JacksonJsonObjectReader;
 import org.springframework.batch.item.json.JsonFileItemWriter;
+import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
+import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.mongodb.core.MongoOperations;
 import ru.otus.domain.Book;
 import ru.otus.dto.BookDto;
-import ru.otus.repositories.BookRepository;
+import ru.otus.services.BookService;
 
 import java.util.List;
 
@@ -36,28 +44,26 @@ public class BatchConfig {
     }
 
     @Bean
-    public BookItemReader reader(BookRepository bookRepository) {
-        BookItemReader bookItemReader = new BookItemReader();
-        bookItemReader.setBookRepository(bookRepository);
-        return bookItemReader;
-    }
-
-    @Bean
-    public ItemProcessor<Book, BookDto> processor() {
-        return BookDto::dtoFromBook;
-    }
-
-    @Bean
-    public JsonFileItemWriter<BookDto> writer() {
-        return new JsonFileItemWriterBuilder<BookDto>()
-                .name("jsonBookItemWriter")
+    public JsonItemReader<BookDto> reader() {
+        return new JsonItemReaderBuilder<BookDto>()
+                .name("jsonBookReader")
                 .resource(new FileSystemResource("outputBook.txt"))
-                .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+                .jsonObjectReader(new JacksonJsonObjectReader<>(BookDto.class))
                 .build();
     }
 
     @Bean
-    public Job importUserJob(Step step1, BookItemReader itemReader) {
+    public ItemProcessor<BookDto, Book> processor() {
+        return BookDto::bookfromDto;
+    }
+
+    @Bean
+    public BookItemWriter writer(BookService bookService) {
+        return new BookItemWriter(bookService);
+    }
+
+    @Bean
+    public Job importUserJob(Step step1) {
         return jobBuilderFactory.get("importUserJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(step1)
@@ -66,7 +72,6 @@ public class BatchConfig {
                     @Override
                     public void beforeJob(JobExecution jobExecution) {
                         logger.info("Начало job");
-                        itemReader.init();
                     }
 
                     @Override
@@ -78,20 +83,20 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step1(JsonFileItemWriter<BookDto> writer, ItemReader<Book> reader, ItemProcessor<Book, BookDto> itemProcessor) {
+    public Step step1(BookItemWriter writer, ItemReader<BookDto> reader, ItemProcessor<BookDto, Book> itemProcessor) {
         return stepBuilderFactory.get("step1")
-                .<Book, BookDto>chunk(10)
+                .<BookDto, Book>chunk(5)
                 .reader(reader)
                 .processor(itemProcessor)
                 .writer(writer)
-                .listener(new ItemReadListener<Book>() {
+                .listener(new ItemReadListener<BookDto>() {
                     public void beforeRead() { logger.info("Начало чтения"); }
-                    public void afterRead(Book book) { logger.info("Конец чтения: прочитана книга " + book); }
+                    public void afterRead(BookDto bookDto) { logger.info("Конец чтения: прочитана книга " + bookDto); }
                     public void onReadError(Exception e) { logger.info("Ошибка чтения: " + e.getMessage()); }
                 })
                 .listener(new ItemWriteListener<Book>() {
                     public void beforeWrite(List list) { logger.info("Начало записи"); }
-                    public void afterWrite(List list) { logger.info("Конец записи. Записано " + list.size()); }
+                    public void afterWrite(List list) { logger.info("Конец записи. Обработано " + list.size()); }
                     public void onWriteError(Exception e, List list) { logger.info("Ошибка записи"); }
                 })
                 .listener(new ChunkListener() {
