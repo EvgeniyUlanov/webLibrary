@@ -23,4 +23,6 @@ public interface BookService {
     Mono<Void> deleteBook(String id);
 
     Mono<Book> addAuthorToBook(String bookId, String authorName);
+
+    Mono<Book> addBook(Book book);
 }

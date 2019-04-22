@@ -7,11 +7,15 @@ import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
+import ru.otus.exeptions.CreateEntityException;
 import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.repositories.AuthorRepository;
 import ru.otus.repositories.BookRepository;
 import ru.otus.repositories.GenreRepository;
 import ru.otus.services.BookService;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -64,6 +68,31 @@ public class BookServiceImpl implements BookService {
         }
         Book book = new Book(foundedGenre, bookName);
         book.getAuthors().add(author);
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public Mono<Book> addBook(Book book) {
+        if (bookRepository.findByName(book.getName()).blockOptional().orElse(null) != null) {
+            throw new CreateEntityException(String.format("book with name %s already exist", book.getName()));
+        }
+        Genre foundedGenre = genreRepository.findByName(book.getGenre().getName()).blockOptional().orElse(null);
+        if (foundedGenre == null) {
+            foundedGenre = genreRepository
+                    .save(book.getGenre())
+                    .blockOptional()
+                    .orElseThrow(() -> new CreateEntityException("error save genre"));
+        }
+        book.setGenre(foundedGenre);
+        Set<Author> foundedAuthors = new HashSet<>();
+        for (Author author : book.getAuthors()) {
+            Author foundedAuthor = authorRepository.findByName(author.getName()).blockOptional().orElse(null);
+            if (foundedAuthor == null) {
+                foundedAuthor = authorRepository.save(author).blockOptional().orElseThrow(() -> new CreateEntityException("error save author"));
+            }
+            foundedAuthors.add(foundedAuthor);
+        }
+        book.setAuthors(foundedAuthors);
         return bookRepository.save(book);
     }
 

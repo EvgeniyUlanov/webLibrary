@@ -18,4 +18,6 @@ public interface BookRepository extends ReactiveMongoRepository<Book, String> {
     Flux<Book> findByGenre(Mono<Genre> genre);
 
     Flux<Book> findByAuthorsContains(Mono<Author> author);
+
+    Mono<Book> findByName(String name);
 }

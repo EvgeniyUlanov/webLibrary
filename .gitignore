@@ -29,3 +29,4 @@ webLibrarySql/src/main/resources/static/css/bootstrap.min.css
 webLibrarySql/src/main/resources/static/js/jquery.min.js
 webLibraryMongo/src/main/resources/static/css/bootstrap.min.css
 webLibraryMongo/src/main/resources/static/js/jquery.min.js
+output*.txt
