@@ -22,4 +22,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     @Query("select b from Book b join b.authors a where lower(a.name) like lower(:authorName)")
     List<Book> findByAuthorName(@Param("authorName") String authorName);
+
+    Optional<Book> deleteBookById(Long id);
 }
