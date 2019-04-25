@@ -21,3 +21,6 @@ body, html {
     background-size: cover;
     background: white url("../img/background5.jpg") center;
 }
+#logfileOut {
+    font-size: 80%;
+}

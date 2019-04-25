@@ -56,4 +56,12 @@ public class MainController {
         model.addAttribute("message", message);
         return "/welcomePage";
     }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String getAdminPage(Model model) {
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("userName", principal.getUsername());
+        return "adminPage";
+    }
 }
