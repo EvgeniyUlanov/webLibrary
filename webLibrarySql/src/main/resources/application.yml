@@ -17,7 +17,7 @@ management:
       roles: ROLE_ADMIN
 
 server:
-  port: 8081
+  port: 8080
 
 logging:
   file: library.log
