@@ -1,5 +1,6 @@
 package ru.otus.services.impl;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
@@ -21,9 +22,12 @@ import ru.otus.repositories.GenreRepository;
 import ru.otus.services.BookService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class BookServiceImpl implements BookService {
+
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(Logger.class);
 
     private BookRepository bookRepository;
     private GenreRepository genreRepository;
@@ -90,6 +94,8 @@ public class BookServiceImpl implements BookService {
         acl.insertAce(acl.getEntries().size(), BasePermission.READ, sid, true);
         acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, admin, true);
         aclService.updateAcl(acl);
+
+        logger.info(String.format("book with name %s was added", bookName));
     }
 
     @Override
@@ -104,11 +110,13 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
         book.getComments().add(new Comment(comment));
         bookRepository.save(book);
+        logger.info(String.format("comment was added to book '%s': %s", book.getName(), comment));
     }
 
     @Override
     public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+        Book book = bookRepository.deleteBookById(id).orElseThrow(() -> new EntityNotFoundException("book not found"));
+        logger.info(String.format("book id - %d, name - '%s' was deleted", book.getId(), book.getName()));
     }
 
     @Override
@@ -121,5 +129,6 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new EntityNotFoundException("author not found"));
         book.getAuthors().add(author);
         bookRepository.save(book);
+        logger.info(String.format("author '%s' was added to book '%s'", authorName, book.getName()));
     }
 }

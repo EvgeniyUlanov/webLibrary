@@ -2,6 +2,30 @@ spring:
   profiles:
     active: h2
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - metrics
+          - logfile
+
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: ROLE_ADMIN
+
+server:
+  port: 8080
+
+logging:
+  file: library.log
+  level:
+    org.springframework.web: info
+    org.hibernate: error
+
+
 ---
 spring:
   profiles: h2

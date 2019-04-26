@@ -72,8 +72,8 @@ public class User {
         this.roles = roles;
     }
 
-    public void addRole(Optional<Role> role) {
-        roles.add(role.orElseThrow(() -> new EntityNotFoundException("Role not found")));
+    public void addRole(Role role) {
+        roles.add(role);
     }
 
     @Override
