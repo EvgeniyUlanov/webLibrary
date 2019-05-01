@@ -48,11 +48,11 @@ spring:
   datasource:
     username: postgres
     password: 784512963
-    url: jdbc:postgresql://localhost:5432/library
+    url: jdbc:postgresql://192.168.99.100:32770/postgres
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
     schema: classpath:/schema/schema.sql
-    data: classpath:/schema/data.sql
+    data: classpath:/schema/data-postgres.sql
   jpa:
     hibernate:
       ddl-auto: update

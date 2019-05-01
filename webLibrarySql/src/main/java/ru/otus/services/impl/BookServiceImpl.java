@@ -115,8 +115,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long id) {
-        Book book = bookRepository.deleteBookById(id).orElseThrow(() -> new EntityNotFoundException("book not found"));
-        logger.info(String.format("book id - %d, name - '%s' was deleted", book.getId(), book.getName()));
+        bookRepository.deleteById(id);
+        logger.info(String.format("book with id - %d was deleted", id));
     }
 
     @Override
