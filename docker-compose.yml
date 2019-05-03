@@ -10,6 +10,8 @@ services:
       - lib_web
     depends_on:
       - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/library
 
   db:
     container_name: postgres_db
