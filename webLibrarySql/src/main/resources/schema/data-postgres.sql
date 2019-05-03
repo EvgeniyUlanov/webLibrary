@@ -97,3 +97,21 @@ INSERT INTO acl_sid (id, principal, sid) VALUES
 (2, true, 'user'),
 (3, false, 'ROLE_ADMIN'),
 (4, false, 'ROLE_USER');
+
+INSERT INTO acl_object_identity (id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting) VALUES
+(1, 1, (SELECT book_id FROM books WHERE book_name = 'Sea Wolf'), NULL, 4, FALSE),
+(2, 1, (SELECT book_id FROM books WHERE book_name = 'The hearts of three'), NULL, 4, FALSE),
+(3, 1, (SELECT book_id FROM books WHERE book_name = 'War and peace'), NULL, 4, FALSE),
+(4, 1, (SELECT book_id FROM books WHERE book_name = 'Anna Karenina'), NULL, 4, FALSE),
+(5, 1, (SELECT book_id FROM books WHERE book_name = 'Evgeniy Onegin'), NULL, 4, FALSE),
+(6, 1, (SELECT book_id FROM books WHERE book_name = '12 chairs'), NULL, 4, FALSE),
+(7, 1, (SELECT book_id FROM books WHERE book_name = 'Golden calf'), NULL, 4, FALSE);
+
+INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
+(1, 1, 1, 4, 1, TRUE, TRUE, TRUE),
+(2, 2, 1, 4, 1, TRUE, TRUE, TRUE),
+(3, 3, 1, 4, 1, TRUE, TRUE, TRUE),
+(4, 4, 1, 4, 1, TRUE, TRUE, TRUE),
+(5, 5, 1, 4, 1, TRUE, TRUE, TRUE),
+(6, 6, 1, 4, 1, TRUE, TRUE, TRUE),
+(7, 7, 1, 4, 1, TRUE, TRUE, TRUE);
