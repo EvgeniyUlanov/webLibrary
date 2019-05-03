@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  library:
+    container_name: library
+    build: "."
+    ports:
+      - 8080:8080
+    networks:
+      - lib_web
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/library
+
+  db:
+    container_name: postgres_db
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=784512963
+      - POSTGRES_DB=library
+    networks:
+      - lib_web
+    ports:
+      - 5432:5432
+
+
+networks:
+  lib_web:

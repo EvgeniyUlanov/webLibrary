@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: h2
+    active: postgres
 
 management:
   endpoints:
@@ -48,11 +48,11 @@ spring:
   datasource:
     username: postgres
     password: 784512963
-    url: jdbc:postgresql://localhost:5432/library
+    url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
-    schema: classpath:/schema/schema.sql
-    data: classpath:/schema/data.sql
+    schema: classpath:/schema/schema-postgres.sql
+    data: classpath:/schema/data-postgres.sql
   jpa:
     hibernate:
       ddl-auto: update
