@@ -1,6 +1,9 @@
 spring:
   profiles:
-    active: postgres
+    active: h2
+  batch:
+    job:
+      enabled: false
 
 management:
   endpoints:
