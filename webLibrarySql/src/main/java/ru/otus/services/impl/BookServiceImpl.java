@@ -46,11 +46,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @HystrixCommand
     public List<Book> getBookByName(String bookName) {
         return bookRepository.findByName("%" + bookName + "%");
     }
 
     @Override
+    @HystrixCommand
     public Book getBookById(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
