@@ -1,5 +1,6 @@
 package ru.otus.services.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.acls.domain.BasePermission;
@@ -56,16 +57,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @PostFilter("hasPermission(filterObject, 'READ')")
+    @HystrixCommand
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Override
+    @HystrixCommand
     public List<Book> getBookByGenre(String genre) {
         return bookRepository.findByGenreName("%" + genre + "%");
     }
 
     @Override
+    @HystrixCommand
     public void addBook(String bookName, String genre, String authorName) {
         Genre foundedGenre = genreRepository
                 .findByName(genre)
@@ -99,11 +103,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @HystrixCommand
     public List<Book> getBookByAuthor(String authorName) {
         return bookRepository.findByAuthorName("%" + authorName + "%");
     }
 
     @Override
+    @HystrixCommand
     public void addCommentToBook(Long bookId, String comment) {
         Book book = bookRepository
                 .findById(bookId)
@@ -114,12 +120,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @HystrixCommand
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
         logger.info(String.format("book with id - %d was deleted", id));
     }
 
     @Override
+    @HystrixCommand
     public void addAuthorToBook(Long bookId, String authorName) {
         Book book = bookRepository
                 .findById(bookId)

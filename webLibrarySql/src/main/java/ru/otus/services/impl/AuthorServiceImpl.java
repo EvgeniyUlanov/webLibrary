@@ -24,13 +24,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    @HystrixCommand(groupKey = "authorService", commandKey = "getAll", fallbackMethod = "fallBack")
+    @HystrixCommand
     public List<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
-    @HystrixCommand(groupKey = "authorService", commandKey = "addNewAuthor", fallbackMethod = "fallBack")
+    @HystrixCommand
     public boolean addNewAuthorWithName(String name) {
         try {
             authorRepository.save(new Author(name));
@@ -43,18 +43,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    @HystrixCommand(groupKey = "authorService", commandKey = "findByFullName", fallbackMethod = "fallBack")
+    @HystrixCommand
     public List<Author> findByName(String authorName) {
         return Collections.singletonList(authorRepository.findByName(authorName).orElseThrow(() ->new EntityNotFoundException("author not found")));
     }
 
     @Override
-    @HystrixCommand(groupKey = "authorService", commandKey = "findByPartOfName", fallbackMethod = "fallBack")
+    @HystrixCommand
     public List<Author> findByNameIgnoreCase(String authorName) {
         return authorRepository.findAuthorByNameIgnoreCase("%" + authorName + "%");
-    }
-
-    public String fallBack() {
-        return "wrong";
     }
 }
