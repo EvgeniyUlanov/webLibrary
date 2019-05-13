@@ -1,5 +1,6 @@
 package ru.otus.services.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Genre;
@@ -21,11 +22,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @HystrixCommand
     public List<Genre> getAll() {
         return genreRepository.findAll();
     }
 
     @Override
+    @HystrixCommand
     public boolean addNewGenreWithName(String name) {
         try {
             genreRepository.save(new Genre(name));

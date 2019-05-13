@@ -1,6 +1,9 @@
 spring:
   profiles:
-    active: postgres
+    active: h2
+  batch:
+    job:
+      enabled: false
 
 management:
   endpoints:
@@ -10,11 +13,15 @@ management:
           - health
           - metrics
           - logfile
+          - hystrix.stream
 
   endpoint:
     health:
       show-details: when_authorized
       roles: ROLE_ADMIN
+    hystrix:
+      stream:
+        enabled: true
 
 server:
   port: 8080

@@ -1,5 +1,6 @@
 package ru.otus.services.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Role;
@@ -28,11 +29,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @HystrixCommand
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
     @Override
+    @HystrixCommand
     public User addNewUser(User user) {
         Role role = roleRepository
                 .findByRole(RolesNames.USER)
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @HystrixCommand
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("user not found"));
         userRepository.delete(user);
@@ -50,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @HystrixCommand
     public Optional<User> getUserByName(String name) {
         return userRepository.findByName(name);
     }

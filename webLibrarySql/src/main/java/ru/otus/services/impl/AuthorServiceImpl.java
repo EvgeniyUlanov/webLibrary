@@ -1,5 +1,6 @@
 package ru.otus.services.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
@@ -23,11 +24,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @HystrixCommand
     public List<Author> getAll() {
         return authorRepository.findAll();
     }
 
     @Override
+    @HystrixCommand
     public boolean addNewAuthorWithName(String name) {
         try {
             authorRepository.save(new Author(name));
@@ -40,11 +43,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @HystrixCommand
     public List<Author> findByName(String authorName) {
         return Collections.singletonList(authorRepository.findByName(authorName).orElseThrow(() ->new EntityNotFoundException("author not found")));
     }
 
     @Override
+    @HystrixCommand
     public List<Author> findByNameIgnoreCase(String authorName) {
         return authorRepository.findAuthorByNameIgnoreCase("%" + authorName + "%");
     }
