@@ -1,22 +1,13 @@
 package ru.otus.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.domain.GrantedAuthoritySid;
-import org.springframework.security.acls.domain.ObjectIdentityImpl;
-import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.jdbc.JdbcMutableAclService;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.acls.model.Sid;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.domain.Book;
+import ru.otus.dto.CommentDto;
+import ru.otus.integration.CommentCheck;
 import ru.otus.services.BookService;
 
 import java.util.List;
@@ -26,9 +17,11 @@ import java.util.List;
 public class BookController {
 
     private BookService bookService;
+    private CommentCheck commentCheck;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, CommentCheck commentCheck) {
         this.bookService = bookService;
+        this.commentCheck = commentCheck;
     }
 
     @GetMapping(value = "/book")
@@ -59,10 +52,9 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/addComment")
-    public ResponseEntity<String> addCommentToBook(
-            @RequestParam(value = "comment") String comment,
-            @RequestParam(value = "book_id") Long bookId) {
-        bookService.addCommentToBook(bookId, comment);
+    public ResponseEntity<String> addCommentToBook(@RequestBody CommentDto commentDto) {
+        commentDto = commentCheck.check(commentDto);
+        bookService.addCommentToBook(commentDto.getBookId(), commentDto.getComment());
         return ResponseEntity.ok("{}");
     }
 
