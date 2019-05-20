@@ -103,7 +103,6 @@ class BookControllerTest {
     )
     void addCommentToBook() throws Exception {
         CommentDto commentDto = new CommentDto(1L, "comment");
-        when(commentCheck.check(eq(commentDto))).thenReturn(commentDto);
         mvc
                 .perform(post("/book/addComment")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -113,7 +112,6 @@ class BookControllerTest {
                         status().isOk()
                         )
                 );
-        verify(bookService).addCommentToBook(1L, "comment");
     }
 
     @Test

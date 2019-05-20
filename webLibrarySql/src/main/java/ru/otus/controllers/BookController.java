@@ -53,8 +53,7 @@ public class BookController {
 
     @PostMapping(value = "/book/addComment")
     public ResponseEntity<String> addCommentToBook(@RequestBody CommentDto commentDto) {
-        commentDto = commentCheck.check(commentDto);
-        bookService.addCommentToBook(commentDto.getBookId(), commentDto.getComment());
+        commentCheck.check(commentDto);
         return ResponseEntity.ok("{}");
     }
 

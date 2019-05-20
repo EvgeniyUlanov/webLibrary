@@ -38,6 +38,7 @@ public class IntegrationConfig {
         return IntegrationFlows.from("commentInputChannel")
                 .handle("commentCheckServiceImpl", "checkForbiddenWords")
                 .channel("commentOutputChannel")
+                .handle("bookServiceImpl", "addCommentToBook")
                 .get();
     }
 }
