@@ -137,7 +137,8 @@ function addComment() {
         $.ajax({
             type: 'POST',
             url: 'book/addComment',
-            data: {'book_id': bookId, 'comment': comment},
+            data: JSON.stringify({'bookId': bookId, 'comment': comment}),
+            contentType: 'application/json',
             success: function () {
                 getBookInfo(bookId);
             },

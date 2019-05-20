@@ -12,6 +12,7 @@ import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.stereotype.Service;
+import ru.otus.dto.CommentDto;
 import ru.otus.exeptions.EntityNotFoundException;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
@@ -112,13 +113,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @HystrixCommand
-    public void addCommentToBook(Long bookId, String comment) {
+    public void addCommentToBook(CommentDto commentDto) {
         Book book = bookRepository
-                .findById(bookId)
+                .findById(commentDto.getBookId())
                 .orElseThrow(() -> new EntityNotFoundException("book not found"));
-        book.getComments().add(new Comment(comment));
+        book.getComments().add(new Comment(commentDto.getComment()));
         bookRepository.save(book);
-        logger.info(String.format("comment was added to book '%s': %s", book.getName(), comment));
+        logger.info(String.format("comment was added to book '%s': %s", book.getName(), commentDto.getComment()));
     }
 
     @Override

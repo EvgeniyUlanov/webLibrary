@@ -1,5 +1,6 @@
 package ru.otus.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.CommentDto;
+import ru.otus.integration.CommentCheck;
 import ru.otus.services.BookService;
 
 import static org.mockito.BDDMockito.*;
@@ -31,6 +34,9 @@ class BookControllerTest {
 
     @MockBean
     private UserDetailsService userDetailsService;
+
+    @MockBean
+    private CommentCheck commentCheck;
 
     @Test
     void getAll() throws Exception {
@@ -96,15 +102,16 @@ class BookControllerTest {
             authorities = {"ROLE_ADMIN"}
     )
     void addCommentToBook() throws Exception {
+        CommentDto commentDto = new CommentDto(1L, "comment");
         mvc
                 .perform(post("/book/addComment")
-                        .param("comment", "comment")
-                        .param("book_id", "1"))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(new ObjectMapper().writeValueAsString(commentDto))
+                )
                 .andExpect(ResultMatcher.matchAll(
                         status().isOk()
                         )
                 );
-        verify(bookService).addCommentToBook(1L, "comment");
     }
 
     @Test
